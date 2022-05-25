@@ -1,102 +1,102 @@
-﻿using System.Net;
+﻿namespace IRC;
+
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace IRC;
-
 public class Client {
-	
-	private IPEndPoint remoteEndPoint;
-	
-	private Socket socket;
-	
 	public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
-	
+
 	private string incompleteMessage;
 
-	public string ServerAddress { get; }
-	
-	public bool Connected => socket.Connected;
+	private readonly IPEndPoint remoteEndPoint;
+
+	private readonly Socket socket;
 
 	public Client(string hostName, int port = 6667) {
 		var host = Dns.GetHostEntry(hostName);
 		var ipAddress = host.AddressList[0];
-		remoteEndPoint = new IPEndPoint(ipAddress, port);
+		this.remoteEndPoint = new IPEndPoint(ipAddress, port);
 
-		socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-		ServerAddress = hostName + ":" + port;
+		this.socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+		this.ServerAddress = hostName + ":" + port;
 	}
-	
+
+	public string ServerAddress { get; }
+
+	public bool Connected => this.socket.Connected;
+
 	public bool Connect() {
-		if (socket.Connected)
+		if (this.socket.Connected)
 			return true;
 		try {
-			socket.Connect(remoteEndPoint);
+			this.socket.Connect(this.remoteEndPoint);
 		} catch (SocketException) {
 			return false;
 		}
-		
+
 		// Receive data asynchronously
-		socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, ReceiveCallback, null);
-		
+		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, this.ServerAddress);
+
 		return true;
 	}
-	
+
 	public void Disconnect() {
-		if (!socket.Connected)
+		if (!this.socket.Connected)
 			return;
-		socket.Disconnect(false);
+		this.socket.Disconnect(false);
 	}
-	
+
 	public bool Send(string message) {
-		if (!socket.Connected)
+		if (!this.socket.Connected)
 			return false;
 		var data = Encoding.UTF8.GetBytes(message);
-		var sent = socket.Send(data);
+		var sent = this.socket.Send(data);
 		return sent == data.Length;
 	}
-	
+
 	public string Receive() {
-		if (!socket.Connected)
-			return null;
+		if (!this.socket.Connected)
+			return "";
 		var buffer = new byte[1024];
-		var received = socket.Receive(buffer);
+		var received = this.socket.Receive(buffer);
 		return Encoding.UTF8.GetString(buffer, 0, received);
 	}
-	
+
 	private void ReceiveCallback(IAsyncResult ar) {
-		var received = socket.EndReceive(ar);
+		var received = this.socket.EndReceive(ar);
 		if (received == 0)
 			return;
 		var message = Encoding.UTF8.GetString(new byte[received]);
-		
+
 		// If the message is incomplete, store it and wait for the next message
-		message = incompleteMessage + message;
-		incompleteMessage = "";
-		
+		message = this.incompleteMessage + message;
+		this.incompleteMessage = "";
+
 		// If the message is complete, process it
 		if (message.Contains("\r\n")) {
 			var messages = message.Split('\n');
 			foreach (var msg in messages) {
 				if (msg.Length == 0)
 					continue;
-				if (msg.EndsWith('\r'))
-					HandleMessage(msg[..^1]);
-				else {
+				if (msg.EndsWith('\r')) {
+					this.HandleMessage(msg[..^1]);
+				} else {
+					// (msg.EndsWith('\r'))
 					// A complete message contains a \r\n, so the last message is incomplete
 					// Store it and wait for the next message
-					incompleteMessage = msg;
+					this.incompleteMessage = msg;
 					break;
 				}
 			}
 		}
-		
+
 		// Receive data asynchronously
-		socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, ReceiveCallback, null);
-	}
-	
-	private void HandleMessage(string message) {
-		
+		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, null);
 	}
 
+	private void HandleMessage(string message) {
+		// Make a "string" message into a Message object
+		
+	}
 }

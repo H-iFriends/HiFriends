@@ -1,5 +1,4 @@
-namespace IRC; 
+namespace IRC;
 
 public class MessageReceivedEventArgs {
-	
 }
