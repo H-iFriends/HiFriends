@@ -7,11 +7,15 @@ using System.Text;
 public class Client {
 	public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
 
-	private string incompleteMessage;
-
 	private readonly IPEndPoint remoteEndPoint;
 
 	private readonly Socket socket;
+
+	private string incompleteMessage;
+
+	private string nick;
+
+	private string user;
 
 	public Client(string hostName, int port = 6667) {
 		var host = Dns.GetHostEntry(hostName);
@@ -47,6 +51,27 @@ public class Client {
 		this.socket.Disconnect(false);
 	}
 
+	public bool Login(string nick, string user, string realName) {
+		if (!this.socket.Connected)
+			return false;
+		this.nick = nick;
+		this.user = user;
+		this.SendMessage("USER", user, "0 *", ":" + realName);
+		this.SendMessage("NICK", nick);
+		return true;
+	}
+
+	public bool SendMessage(string command, params string[] parameters) {
+		if (!this.socket.Connected)
+			return false;
+		var message = new StringBuilder();
+		message.Append(command);
+		foreach (var parameter in parameters)
+			message.Append(' ').Append(parameter);
+		message.Append("\r\n");
+		return this.Send(message.ToString());
+	}
+
 	public bool Send(string message) {
 		if (!this.socket.Connected)
 			return false;
@@ -80,7 +105,7 @@ public class Client {
 				if (msg.Length == 0)
 					continue;
 				if (msg.EndsWith('\r')) {
-					this.HandleMessage(msg[..^1]);
+					this.ParseMessage(msg[..^1]);
 				} else {
 					// (msg.EndsWith('\r'))
 					// A complete message contains a \r\n, so the last message is incomplete
@@ -95,8 +120,47 @@ public class Client {
 		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, null);
 	}
 
-	private void HandleMessage(string message) {
+	private void ParseMessage(string message) {
 		// Make a "string" message into a Message object
-		
+		var copy = message;
+
+		// filter empty / whitespace lines
+		if (string.IsNullOrWhiteSpace(copy))
+			return;
+
+		// Get the prefix, if any
+		Prefix prefix = null;
+		if (':' == message[0]) {
+			// has a prefix
+			var prefixEnd = message.IndexOf(' ');
+			prefix = Prefix.of(message[1..prefixEnd]);
+			message = message[(prefixEnd + 1)..];
+		}
+
+		var commandStr = message[..message.IndexOf(' ')].ToUpper();
+		// This works, verified!
+		var command = (MessageType)Enum.Parse(typeof(MessageType), commandStr);
+		message = message[(commandStr.Length + 1)..];
+
+		// Get the parameters
+		var parameters = new List<string>();
+		while (!string.IsNullOrWhiteSpace(message)) {
+			message = message.Trim();
+			if (message[0] == ':') {
+				parameters.Add(message[1..]);
+				break;
+			}
+			var parameterEnd = message.IndexOf(' ');
+			parameters.Add(message[..parameterEnd]);
+			message = message[(parameterEnd + 1)..];
+		}
+
+		// Create the message
+		var messageObj = new Message(command, parameters.ToArray(), prefix);
+		this.HandleMessage(messageObj);
+	}
+
+	private void HandleMessage(Message message) {
+		;
 	}
 }

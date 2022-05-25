@@ -1,4 +1,4 @@
-namespace IRC; 
+namespace IRC;
 
 public enum MessageType {
 	PRIVMSG,
@@ -8,7 +8,7 @@ public enum MessageType {
 	QUIT,
 	NICK,
 	MODE,
-	
+
 	// Server messages
 	ERR_NEEDMOREPARAMS = 461,
 	ERR_INVITEONLYCHAN = 473,
@@ -30,9 +30,8 @@ public enum MessageType {
 	ERR_NOTOPLEVEL = 413,
 	ERR_WILDTOPLEVEL = 414,
 	ERR_NOTONCHANNEL = 442,
-	
+
 	// RPL_
 	RPL_TOPIC = 332,
-	RPL_AWAY = 301,
-	
+	RPL_AWAY = 301
 }
