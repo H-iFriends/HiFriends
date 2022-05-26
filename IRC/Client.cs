@@ -16,6 +16,10 @@ public class Client {
 	private string nick;
 
 	private string user;
+	
+	private bool loggedIn;
+
+	public bool LoggedIn => this.loggedIn;
 
 	public Client(string hostName, int port = 6667) {
 		var host = Dns.GetHostEntry(hostName);
@@ -51,14 +55,23 @@ public class Client {
 		this.socket.Disconnect(false);
 	}
 
-	public bool Login(string nick, string user, string realName) {
-		if (!this.socket.Connected)
+	public bool Login(string nick, string user, string realName, string? password = null) {
+		if (!this.socket.Connected || string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
 			return false;
+
+		if (string.IsNullOrWhiteSpace(realName))
+			realName = "HiFriends IRC Client User";
+		
 		this.nick = nick;
 		this.user = user;
-		this.SendMessage("USER", user, "0 *", ":" + realName);
-		this.SendMessage("NICK", nick);
-		return true;
+		
+		if (!this.SendMessage("HELLO"))
+			return false;
+
+		if (!string.IsNullOrWhiteSpace(password) && !this.SendMessage("PASS", password))
+			return false;
+		
+		return this.SendMessage("NICK", nick) && this.SendMessage("USER", user, "0", "*", ":" + realName);
 	}
 
 	public bool SendMessage(string command, params string[] parameters) {
@@ -71,7 +84,7 @@ public class Client {
 		message.Append("\r\n");
 		return this.Send(message.ToString());
 	}
-
+ 
 	public bool Send(string message) {
 		if (!this.socket.Connected)
 			return false;
