@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRC", "IRC\IRC.csproj", "{FD729524-CE77-47BA-8CD6-C8148512F32C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiFriendsDemo1", "..\..\Ameixa\学习\大二下\软件构造基础\Hi-Friends\HiFriendsDemo1\HiFriendsDemo1.csproj", "{5C4BC942-ABC4-4A02-B751-C7FBD99D1EE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRC-Windows", "..\..\Ameixa\学习\大二下\软件构造基础\Hi-Friends\HiFriendsDemo1\IRC-Windows.csproj", "{5C4BC942-ABC4-4A02-B751-C7FBD99D1EE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
