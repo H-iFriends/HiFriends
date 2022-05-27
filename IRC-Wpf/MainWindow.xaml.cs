@@ -26,6 +26,9 @@ namespace IRC_Wpf
         public MainWindow()
         {
             InitializeComponent();
+
+            //从文件中读取保存的server
+            ImportServer();
         }
         private void SelectButton_Click(object sender, EventArgs e)
         {
@@ -46,16 +49,16 @@ namespace IRC_Wpf
 
         private void RemoveServer(string s)
         {
-            if(Servers.Contains(s))
+            if (Servers.Contains(s))
                 Servers.Remove(s);
         }
 
         private List<string> FindServer(string s)
         {
             List<string> res = new List<string>();
-            foreach(string server in Servers)
+            foreach (string server in Servers)
             {
-                if(server.Contains(s))
+                if (server.Contains(s))
                     res.Add(server);
             }
             return res;
@@ -64,7 +67,7 @@ namespace IRC_Wpf
         private void ExportServer(string filePath = "servers.xml")
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
-            using(FileStream fs = new FileStream(filePath, FileMode.Create))
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, Servers);
             }
@@ -73,10 +76,19 @@ namespace IRC_Wpf
         private List<string> ImportServer(string filePath = "servers.xml")
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            try
             {
-                return (List<string>)xmlSerializer.Deserialize(fs);
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    return (List<string>)xmlSerializer.Deserialize(fs);
+                }
+            }catch(FileNotFoundException e)
+            {
+                Console.WriteLine("File \"servers.xml\" not found.");
+                return new List<string>();
             }
+
+
 
         }
     }
