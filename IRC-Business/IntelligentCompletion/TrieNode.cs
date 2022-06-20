@@ -32,5 +32,16 @@ namespace IRC_Business.IntelligentCompletion
             this.isEnd = isEnd;
             this.character = character;
         }
+
+        public TrieNode FindNextNode(char c)
+        {
+            foreach (var node in this.next)
+            {
+                if (node.character == c)
+                    return node;
+            }
+
+            return null;
+        }
     }
 }

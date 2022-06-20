@@ -1,0 +1,18 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=653f2209_002D0a9e_002D4809_002Daf6f_002D42b88ca69b71/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FindVocabularyTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.TrieTest.FindVocabularyTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.TrieTest.AddVocabularyTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=75681cfc_002Dd69c_002D4b69_002D847c_002Df13ceff76764/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FindVocabularyTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.TrieTest.FindVocabularyTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=91df195a_002Dd6aa_002D405f_002Daf3c_002D159440fc06d8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="FindVocabularyTest #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.TrieTest.FindVocabularyTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.TrieTest.AddVocabularyTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
