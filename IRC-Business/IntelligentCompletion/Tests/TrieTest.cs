@@ -122,7 +122,7 @@ public class TrieTest
     {
         CollectionAssert.AreEquivalent(new List<string>(){"hellos", "hi"}, trie.FindAllMatched("h"));
         CollectionAssert.AreEquivalent(new List<string>(){"cat"}, trie.FindAllMatched("c"));
-        CollectionAssert.AreEquivalent(new List<string>(), trie.FindAllMatched("c"));
+        CollectionAssert.AreEquivalent(new List<string>(), trie.FindAllMatched("NotExist"));
 
     }
 }

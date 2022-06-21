@@ -5,30 +5,52 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace IRC_Business
+namespace IRC_Business.Server
 {
     /*
      * 服务器管理
      */
-    internal class ServerHelper
+    public class ServerUtilities
     {
-        public List<string> Servers { get; } = new List<string>();
+        public List<string> Servers { get; }
 
-        private void AddServer(string s)
+        public ServerUtilities()
         {
+            Servers = new List<string>();
+        }
+
+        public ServerUtilities(List<string> servers)
+        {
+            Servers = servers;
+        }
+
+        public void AddServer(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
+            }
             if (Servers.Contains(s))
                 return;
             Servers.Add(s);
         }
 
-        private void RemoveServer(string s)
+        public void RemoveServer(string s)
         {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
+            }
             if (Servers.Contains(s))
                 Servers.Remove(s);
         }
 
-        private List<string> FindServer(string s)
+        public List<string> FindServer(string s)
         {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
+            }
             List<string> res = new List<string>();
             foreach (string server in Servers)
             {
@@ -38,8 +60,10 @@ namespace IRC_Business
             return res;
         }
 
-        private void ExportServer(string filePath = "servers.xml")
+        public void ExportServer(string filePath = "servers.xml")
         {
+            if (Servers.Count == 0) return;
+                
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
@@ -47,7 +71,7 @@ namespace IRC_Business
             }
         }
 
-        private List<string> ImportServer(string filePath = "servers.xml")
+        public List<string> ImportServer(string filePath = "servers.xml")
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
             try
@@ -62,9 +86,6 @@ namespace IRC_Business
                 Console.WriteLine("File \"servers.xml\" not found.");
                 return new List<string>();
             }
-
-
-
         }
     }
 }

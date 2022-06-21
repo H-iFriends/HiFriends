@@ -18,7 +18,7 @@ namespace IRC_Business.IntelligentCompletion
 
         public void AddVocabulary(string s)
         {
-            if(string.IsNullOrEmpty(s))
+            if(string.IsNullOrWhiteSpace(s))
             {
                 throw new ArgumentException("Input vocabulary is null or empty.");
             }
@@ -44,7 +44,7 @@ namespace IRC_Business.IntelligentCompletion
 
         public bool FindVocabulary(string s)
         {
-            if (string.IsNullOrEmpty(s))
+            if (string.IsNullOrWhiteSpace(s))
             {
                 throw new ArgumentException("Input vocabulary is null or empty.");
             }
@@ -62,7 +62,7 @@ namespace IRC_Business.IntelligentCompletion
         }
         
         public TrieNode FindLastNode(string s){
-            if (string.IsNullOrEmpty(s))
+            if (string.IsNullOrWhiteSpace(s))
             {
                 throw new ArgumentException("Input vocabulary is null or empty.");
             }
@@ -83,7 +83,7 @@ namespace IRC_Business.IntelligentCompletion
         {
             List<string> result = new List<string>();
             //字典树中不存在s前缀 或 s为空
-            if (!FindVocabulary(s) || string.IsNullOrEmpty(s)) return result;
+            if (!FindVocabulary(s) || string.IsNullOrWhiteSpace(s)) return result;
             
 
             Queue<string> queue = new Queue<string>();
