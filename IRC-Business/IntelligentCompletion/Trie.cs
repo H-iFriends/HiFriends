@@ -40,31 +40,6 @@ namespace IRC_Business.IntelligentCompletion
                 }
             }
             
-            // //将词语加入字典树
-            // for(int i = 0; i < s.Length; i++)
-            // {
-            //     if(i != s.Length - 1)
-            //     {
-            //         current.isEnd = false;
-            //     }
-            //     //找到下一个节点
-            //     bool flag = true;
-            //     foreach(TrieNode node in current.next)
-            //     {
-            //         if(node.character == s[i])
-            //         {
-            //             current = node;
-            //             flag = false;
-            //             break;
-            //         }
-            //     }
-            //     //若在后继节点数组中未找到想找的节点，则新增进去
-            //     if (flag)
-            //     {
-            //         current = new TrieNode(s[i]);
-            //         current.next.Add(current);
-            //     }
-            // }
         }
 
         public bool FindVocabulary(string s)
@@ -73,44 +48,65 @@ namespace IRC_Business.IntelligentCompletion
             {
                 throw new ArgumentException("Input vocabulary is null or empty.");
             }
-
-            //     for (int i = 0; i < s.Length; i++)
-            //     {
-            //         if (current.isEnd && i != s.Length - 1)
-            //         {
-            //             return false;
-            //         }
-            //
-            //         bool isFound = true;
-            //         foreach (var node in current.next)
-            //         {
-            //             if (node.character == s[i])
-            //             {
-            //                 current = node;
-            //                 isFound = true;
-            //                 break;
-            //             }
-            //         }
-            //
-            //         if (!isFound)
-            //         {
-            //             return false;
-            //         }
-            //     }
-            //
-            //     return true;
-            // }
+            
             TrieNode current = this.beginNode;
-            for (int i = 0; i < s.Length; i++)
+            foreach (var c in s)
             {
-                current = current.FindNextNode(s[i]);
+                current = current.FindNextNode(c);
                 if (current == null)
                 {
                     return false;
                 }
             }
-
             return true;
+        }
+        
+        public TrieNode FindLastNode(string s){
+            if (string.IsNullOrEmpty(s))
+            {
+                throw new ArgumentException("Input vocabulary is null or empty.");
+            }
+            
+            TrieNode current = this.beginNode;
+            foreach (var c in s)
+            {
+                current = current.FindNextNode(c);
+                if (current == null)
+                {
+                    return null;
+                }
+            }
+            return current;
+        }
+
+        public List<string> FindAllMatched(string s)
+        {
+            List<string> result = new List<string>();
+            //字典树中不存在s前缀 或 s为空
+            if (!FindVocabulary(s) || string.IsNullOrEmpty(s)) return result;
+            
+
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue(s);
+            while (queue.Count > 0)
+            {
+                string current = queue.Dequeue();
+                var lastNode = FindLastNode(current);
+                
+                //此节点为最后一个节点
+                if (lastNode.next.Count == 0)
+                {
+                    result.Add(current);
+                    continue;
+                }
+                //此节点不为最后一个节点
+                foreach (var node in lastNode.next)
+                {
+                    queue.Enqueue(current + node.character);
+                }
+            }
+
+            return result;
         }
     }
 }

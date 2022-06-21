@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualBasic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace IRC_Business.IntelligentCompletion.Tests;
 
 [TestClass]
@@ -100,5 +101,28 @@ public class TrieTest
         {
             Assert.AreEqual("Input vocabulary is null or empty.", e.Message);
         }
+    }
+
+    [TestMethod]
+    public void FindLastNodeTest()
+    {
+        var node1 = trie.FindLastNode("cat");
+        var node2 = trie.FindLastNode("hello");
+        var node3 = trie.FindLastNode("hellos");
+        var node4 = trie.FindLastNode("NotExist");
+        
+        Assert.IsTrue(node1.character == 't');
+        Assert.IsTrue(node2.character == 'o');
+        Assert.IsTrue(node3.character == 's');
+        Assert.IsNull(node4);
+    }
+
+    [TestMethod]
+    public void FindAllMatchedTest()
+    {
+        CollectionAssert.AreEquivalent(new List<string>(){"hellos", "hi"}, trie.FindAllMatched("h"));
+        CollectionAssert.AreEquivalent(new List<string>(){"cat"}, trie.FindAllMatched("c"));
+        CollectionAssert.AreEquivalent(new List<string>(), trie.FindAllMatched("c"));
+
     }
 }
