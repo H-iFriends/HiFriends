@@ -9,6 +9,12 @@ public class ClientTest {
 	[TestMethod]
 	public void TestLogin() {
 		var client = new Client("8.130.102.137");
+
+		client.EventMotdReceived += (sender, args) => {
+			var c = sender as Client;
+			Console.WriteLine($"\n\nReceived MOTD: from server {c.ServerAddress}\n" + args.motd);
+		};
+		
 		if (!client.Connect()) {
 			Assert.Fail("Could not connect to server");
 		}
@@ -16,6 +22,10 @@ public class ClientTest {
 		if (!client.Login("test", "test")) {
 			Assert.Fail("Could not login");
 		}
+		
+		Thread.Sleep(100000);
+		
+		client.Disconnect();
 	}
 
 	[TestMethod]
