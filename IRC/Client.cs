@@ -5,8 +5,15 @@ using System.Net.Sockets;
 using System.Text;
 using utils;
 
+public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
+	
+public delegate void MotdReceivedEventHandler(object sender, MotdReceivedEventArgs e);
+
 public class Client {
-	public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
+	
+	public event MessageReceivedEventHandler EventMessageReceived;
+	
+	public event MotdReceivedEventHandler EventMotdReceived;
 
 	private readonly IPEndPoint remoteEndPoint;
 
@@ -23,6 +30,8 @@ public class Client {
 	private const int BUFFER_SIZE = 1024;
 	
 	private byte[] buffer = new byte[BUFFER_SIZE];
+	
+	private StringBuilder motd = new StringBuilder();
 
 	public bool LoggedIn => this.loggedIn;
 
@@ -165,5 +174,35 @@ public class Client {
 
 	private void HandleMessage(Message message) {
 		Console.WriteLine("Received: " + message.ToString());
+
+		switch (message.Command) {
+			case MessageType.RPL_MOTDSTART:
+				HandleMotdStart(message);
+				break;
+			case MessageType.RPL_MOTD:
+				HandleMotd(message);
+				break;
+			case MessageType.RPL_ENDOFMOTD:
+				HandleEndOfMotd(message);
+				break;
+			
+		}
+	}
+	
+	private void HandleMotdStart(Message message) {
+		this.motd.Clear();
+		this.motd.Append(message.Parameters[1]);
+		this.motd.AppendLine();
+	}
+	
+	private void HandleMotd(Message message) {
+		this.motd.Append(message.Parameters[1]);
+		this.motd.AppendLine();
+	}
+	
+	private void HandleEndOfMotd(Message message) {
+		this.motd.Append(message.Parameters[1]);
+		this.motd.AppendLine();
+		this.EventMotdReceived(this, new MotdReceivedEventArgs(this.motd.ToString()));
 	}
 }
