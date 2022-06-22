@@ -16,6 +16,10 @@ public class ClientTest {
 		if (!client.Login("test", "test")) {
 			Assert.Fail("Could not login");
 		}
+		
+		Thread.Sleep(10000);
+		
+		client.Disconnect();
 	}
 
 	[TestMethod]

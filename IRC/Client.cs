@@ -3,6 +3,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using utils;
 
 public class Client {
 	public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
@@ -18,12 +19,24 @@ public class Client {
 	private string user;
 	
 	private bool loggedIn;
+	
+	private const int BUFFER_SIZE = 1024;
+	
+	private byte[] buffer = new byte[BUFFER_SIZE];
 
 	public bool LoggedIn => this.loggedIn;
 
 	public Client(string hostName, int port = 6667) {
-		var host = Dns.GetHostEntry(hostName);
-		var ipAddress = host.AddressList[0];
+		var ipAddressFunc = () => {
+			if (IPAddress.TryParse(hostName, out var ip)) {
+				return ip;
+			}
+			var host = Dns.GetHostEntry(hostName);
+			return host.AddressList[0];
+		};
+		
+		var ipAddress = ipAddressFunc();
+		
 		this.remoteEndPoint = new IPEndPoint(ipAddress, port);
 
 		this.socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -44,7 +57,7 @@ public class Client {
 		}
 
 		// Receive data asynchronously
-		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, this.ServerAddress);
+		this.socket.BeginReceive(this.buffer, 0, BUFFER_SIZE, SocketFlags.None, this.ReceiveCallback, null);
 
 		return true;
 	}
@@ -105,7 +118,12 @@ public class Client {
 		var received = this.socket.EndReceive(ar);
 		if (received == 0)
 			return;
-		var message = Encoding.UTF8.GetString(new byte[received]);
+
+		var receivedData = this.buffer[..received];
+		
+		Console.WriteLine(HexDump.Get(receivedData, 0, received));
+		
+		var message = Encoding.UTF8.GetString(receivedData);
 		
 		
 
@@ -132,7 +150,7 @@ public class Client {
 		}
 
 		// Receive data asynchronously
-		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, null);
+		this.socket.BeginReceive(this.buffer, 0, BUFFER_SIZE, SocketFlags.None, this.ReceiveCallback, null);
 	}
 
 	private void ParseMessage(string message) {
