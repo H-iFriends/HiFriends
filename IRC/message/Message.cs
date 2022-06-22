@@ -28,7 +28,7 @@ public class Message {
 		if (':' == message[0]) {
 			// has a prefix
 			var prefixEnd = message.IndexOf(' ');
-			prefix = Prefix.of(message[1..prefixEnd]);
+			prefix = Prefix.of(message);
 			message = message[(prefixEnd + 1)..];
 		}
 
