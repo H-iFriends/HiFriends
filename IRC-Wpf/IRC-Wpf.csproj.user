@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="AddChatRoomWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="AddWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -18,6 +21,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="AddChatRoomWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="AddWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

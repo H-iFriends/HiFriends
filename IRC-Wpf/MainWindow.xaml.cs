@@ -44,6 +44,7 @@ namespace IRC_Wpf
             AddWindow addDialog = new AddWindow();
             if (addDialog.ShowDialog() == true)
             {
+                //获取数据
                 Console.WriteLine(addDialog.getHostName);
                 Console.WriteLine(addDialog.getPort);
             }
