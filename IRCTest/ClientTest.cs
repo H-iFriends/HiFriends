@@ -14,7 +14,12 @@ public class ClientTest {
 			var c = sender as Client;
 			Console.WriteLine($"\n\nReceived MOTD: from server {c.ServerAddress}\n" + args.motd);
 		};
-		
+
+		client.EventMessageReceived += (sender, args) => {
+			var c = sender as Client;
+			Console.WriteLine($"\n\nReceived message: from server {c.ServerAddress}\nTarget: [{args.target}]\nMessage: {args.message}");
+		};
+
 		if (!client.Connect()) {
 			Assert.Fail("Could not connect to server");
 		}

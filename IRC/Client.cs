@@ -175,18 +175,20 @@ public class Client {
 
 		switch (message.Command) {
 			case MessageType.RPL_MOTDSTART:
-				HandleMotdStart(message);
+				this.HandleMotdStart(message);
 				break;
 			case MessageType.RPL_MOTD:
-				HandleMotd(message);
+				this.HandleMotd(message);
 				break;
 			case MessageType.RPL_ENDOFMOTD:
-				HandleEndOfMotd(message);
+				this.HandleEndOfMotd(message);
 				break;
-			
+			case MessageType.PRIVMSG:
+				this.HandlePrivMsg(message);
+				break;
 		}
 	}
-	
+
 	private void HandleMotdStart(Message message) {
 		this.motd.Clear();
 		this.motd.Append(message.Parameters[1]);
@@ -202,5 +204,11 @@ public class Client {
 		this.motd.Append(message.Parameters[1]);
 		this.motd.AppendLine();
 		this.EventMotdReceived(this, new MotdReceivedEventArgs(this.motd.ToString()));
+	}
+
+	private void HandlePrivMsg(Message message) {
+		var target = message.Parameters[0];
+		var messageText = message.Parameters[1];
+		this.EventMessageReceived(this, new MessageReceivedEventArgs(target, messageText));
 	}
 }
