@@ -207,8 +207,9 @@ public class Client {
 	}
 
 	private void HandlePrivMsg(Message message) {
+		var sender = message.Prefix?.GetNick()!;
 		var target = message.Parameters[0];
 		var messageText = message.Parameters[1];
-		this.EventMessageReceived(this, new MessageReceivedEventArgs(target, messageText));
+		this.EventMessageReceived(this, new MessageReceivedEventArgs(sender, target, messageText));
 	}
 }
