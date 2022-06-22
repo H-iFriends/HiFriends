@@ -1,5 +1,7 @@
 namespace IRC;
 
+using System.Text;
+
 public class Message {
 	public Message(MessageType command, string[] parameters, Prefix? prefix) {
 		this.Command = command;
@@ -12,7 +14,7 @@ public class Message {
 	public string[] Parameters { get; }
 
 	public Prefix? Prefix { get; }
-	
+
 	public static Message? parse(string message) {
 		// Make a "string" message into a Message object
 		var copy = message;
@@ -51,5 +53,15 @@ public class Message {
 		// Create the message
 		var messageObj = new Message(command, parameters.ToArray(), prefix);
 		return messageObj;
+	}
+
+	public override string ToString() {
+		var sb = new StringBuilder();
+		if (this.Prefix != null)
+			sb.Append(this.Prefix);
+		sb.Append(this.Command.ToString());
+		foreach (var parameter in this.Parameters)
+			sb.Append(' ').Append(parameter);
+		return sb.ToString();
 	}
 }

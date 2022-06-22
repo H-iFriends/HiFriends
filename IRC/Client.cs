@@ -144,6 +144,6 @@ public class Client {
 	}
 
 	private void HandleMessage(Message message) {
-		;
+		Console.WriteLine("Received: " + message.ToString());
 	}
 }
