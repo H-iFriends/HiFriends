@@ -59,6 +59,7 @@ public class Message {
 		var sb = new StringBuilder();
 		if (this.Prefix != null)
 			sb.Append(this.Prefix);
+		sb.Append(' ');
 		sb.Append(this.Command.ToString());
 		foreach (var parameter in this.Parameters)
 			sb.Append(' ').Append(parameter);

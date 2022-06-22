@@ -43,4 +43,8 @@ public class Prefix {
 
 		return new Prefix(p, nick, user, host);
 	}
+
+	public override string ToString() {
+		return $"Prefix: [{this.prefix}], Nick: [{this.nick}], User: [{this.user}], Host: [{this.host}]";
+	}
 }
