@@ -13,13 +13,13 @@ public class Prefix {
 		this.host = host;
 	}
 
-	public string getPrefix() => this.prefix;
+	public string GetPrefix() => this.prefix;
 
-	public string getNick() => this.nick;
+	public string GetNick() => this.nick;
 
-	public string getUser() => this.user;
+	public string GetUser() => this.user;
 
-	public string getHost() => this.host;
+	public string GetHost() => this.host;
 
 	public static Prefix of(string p) {
 		if (string.IsNullOrWhiteSpace(p))

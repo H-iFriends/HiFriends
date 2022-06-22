@@ -55,7 +55,7 @@ public class Client {
 		this.socket.Disconnect(false);
 	}
 
-	public bool Login(string nick, string user, string realName, string? password = null) {
+	public bool Login(string nick, string user, string realName = "", string? password = null) {
 		if (!this.socket.Connected || string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
 			return false;
 
@@ -106,6 +106,8 @@ public class Client {
 		if (received == 0)
 			return;
 		var message = Encoding.UTF8.GetString(new byte[received]);
+		
+		
 
 		// If the message is incomplete, store it and wait for the next message
 		message = this.incompleteMessage + message;
