@@ -133,8 +133,6 @@ public class Client {
 		Console.WriteLine(HexDump.Get(receivedData, 0, received));
 		
 		var message = Encoding.UTF8.GetString(receivedData);
-		
-		
 
 		// If the message is incomplete, store it and wait for the next message
 		message = this.incompleteMessage + message;
@@ -173,7 +171,7 @@ public class Client {
 	}
 
 	private void HandleMessage(Message message) {
-		Console.WriteLine("Received: " + message.ToString());
+		Console.WriteLine("Received: " + message);
 
 		switch (message.Command) {
 			case MessageType.RPL_MOTDSTART:
