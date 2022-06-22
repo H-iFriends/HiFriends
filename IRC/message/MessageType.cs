@@ -33,5 +33,8 @@ public enum MessageType {
 
 	// RPL_
 	RPL_TOPIC = 332,
-	RPL_AWAY = 301
+	RPL_AWAY = 301,
+	RPL_MOTD = 372,
+	RPL_MOTDSTART = 375,
+	RPL_ENDOFMOTD = 376,
 }
