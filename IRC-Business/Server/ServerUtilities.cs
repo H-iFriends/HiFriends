@@ -12,27 +12,28 @@ namespace IRC_Business.Server
      */
     public class ServerUtilities
     {
-        public List<string> Servers { get; }
+        public List<Server> Servers { get; }
 
         public ServerUtilities()
         {
-            Servers = new List<string>();
+            Servers = new List<Server>();
         }
 
-        public ServerUtilities(List<string> servers)
+        public ServerUtilities(List<Server> servers)
         {
             Servers = servers;
         }
 
-        public void AddServer(string s)
+        public void AddServer(string name, int port)
         {
-            if (string.IsNullOrWhiteSpace(s))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
             }
-            if (Servers.Contains(s))
+            //此服务器已在列表中
+            if (FindServer(name).Count > 0)
                 return;
-            Servers.Add(s);
+            Servers.Add(new Server(name, port));
         }
 
         public void RemoveServer(string s)
@@ -41,20 +42,30 @@ namespace IRC_Business.Server
             {
                 throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
             }
-            if (Servers.Contains(s))
-                Servers.Remove(s);
+
+
+            for (int i = 0; i < Servers.Count;)
+            {
+                if (Servers[i].ServerName.Equals(s))
+                {
+                    Servers.Remove(Servers[i]);
+                    break;
+                }
+
+                ++i;
+            }
         }
 
-        public List<string> FindServer(string s)
+        public List<Server> FindServer(string s)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
                 throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
             }
-            List<string> res = new List<string>();
-            foreach (string server in Servers)
+            List<Server> res = new List<Server>();
+            foreach (Server server in Servers)
             {
-                if (server.Contains(s))
+                if (server.ServerName.Contains(s))
                     res.Add(server);
             }
             return res;
@@ -71,20 +82,20 @@ namespace IRC_Business.Server
             }
         }
 
-        public List<string> ImportServer(string filePath = "servers.xml")
+        public List<Server> ImportServer(string filePath = "servers.xml")
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
             try
             {
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
-                    return (List<string>)xmlSerializer.Deserialize(fs);
+                    return (List<Server>)xmlSerializer.Deserialize(fs);
                 }
             }
             catch (FileNotFoundException e)
             {
                 Console.WriteLine("File \"servers.xml\" not found.");
-                return new List<string>();
+                return new List<Server>();
             }
         }
     }
