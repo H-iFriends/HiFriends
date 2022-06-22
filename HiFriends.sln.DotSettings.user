@@ -2,7 +2,7 @@
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">SUGGESTION</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8ec8fddf_002De9eb_002D4ede_002Db707_002D3e8e079637ed/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ServerUtilitiesTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.Server.Tests.ServerUtilitiesTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::C36C8B1E-072E-48F8-813E-4CDD1A98BDFF::net6.0::IRCTest.ClientTest.TestHex&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
