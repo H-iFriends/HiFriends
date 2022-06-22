@@ -39,11 +39,25 @@ namespace IRC_Wpf
 
         }
 
-        private void ConnectButton_Click(object sender, EventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AddWindow addDialog = new AddWindow();
+            if (addDialog.ShowDialog() == true)
+            {
+                Console.WriteLine(addDialog.getHostName);
+                Console.WriteLine(addDialog.getPort);
+            }
         }
 
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChannelWindow channelDialog = new ChannelWindow();
+            if (channelDialog.ShowDialog() == true)
+            {
+                Console.WriteLine(channelDialog.getChannelName);
+            }
+            this.Close();
+        }
         
     }
 }

@@ -38,7 +38,7 @@
         <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right">
             <Label FontWeight="Bold" FontSize="20" Content="服务器" RenderTransformOrigin="0.361,-0.417" Margin="15,0,0,0"/>
             <TextBlock/>
-            <Button Content="添加" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25"/>
+            <Button Content="添加" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25" Click="AddButton_Click"/>
             <TextBlock Height="30"/>
             <Button Content="移除" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25"/>
             <TextBlock Height="30"/>

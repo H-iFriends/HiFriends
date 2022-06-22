@@ -15,31 +15,32 @@ using System.Windows.Shapes;
 namespace IRC_Wpf
 {
     /// <summary>
-    /// ChatWindow.xaml 的交互逻辑
+    /// AddWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class ChatWindow : Window
+    public partial class AddWindow : Window
     {
-        public ChatWindow()
+        public AddWindow()
         {
             InitializeComponent();
         }
-        private void SendButton_Click(object sender, RoutedEventArgs e)
+        //跳转
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            this.DialogResult = true;
+        }
+        private void ReturnButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
-        private void addChatRoom_Click(object sender, RoutedEventArgs e)
+        //数据
+        public string getHostName
         {
-            AddChatRoomWindow addChatRoomWindow = new AddChatRoomWindow();
-            if(addChatRoomWindow.ShowDialog() == true)
-            {
-                //获取填入数据
-            }
+            get { return HostName.Text; }
         }
-
-        private void delChatRoom_Click(object sender, RoutedEventArgs e)
+        public string getPort
         {
-
+            get { return Port.Text; }
         }
     }
 }
