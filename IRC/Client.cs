@@ -144,9 +144,11 @@ public partial class Client {
 				this.HandleJoin(message);
 				break;
 			case MessageType.RPL_NAMREPLY:
-				this.HandleRplNamReply(message);
+				this.HandleNamReply(message);
 				break;
-			
+			case MessageType.RPL_ENDOFNAMES:
+				this.HandleEndOfNames(message);
+				break;
 		}
 	}
 	
