@@ -33,4 +33,9 @@ public partial class Client {
 		var joinedChannel = message.Parameters[0];
 		this.EventJoinedChannel(this, new JoinedChannelEventArgs(nick, user, host, joinedChannel));
 	}
+
+	private void HandleRplNamReply(Message message) {
+		var channel = message.Parameters[2];
+		var names = message.Parameters[3].Split(' ');
+	}
 }

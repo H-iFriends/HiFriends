@@ -23,6 +23,8 @@ public partial class Client {
 
 	private readonly StringBuilder motd = new();
 
+	private readonly Dictionary<string, string> userListBuffer = new();
+
 	private string nick;
 
 	private string user;
