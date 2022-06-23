@@ -46,6 +46,7 @@ public partial class Client {
 	public void Disconnect() {
 		if (!this.socket.Connected)
 			return;
+		this.LoggedIn = false;
 		this.socket.Disconnect(false);
 	}
 	

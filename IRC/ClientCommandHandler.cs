@@ -15,6 +15,7 @@ public partial class Client {
 	private void HandleEndOfMotd(Message message) {
 		this.motd.Append(message.Parameters[1]);
 		this.motd.AppendLine();
+		this.LoggedIn = true;
 		this.EventMotdReceived(this, new MotdReceivedEventArgs(this.motd.ToString()));
 	}
 

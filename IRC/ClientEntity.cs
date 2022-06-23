@@ -25,7 +25,10 @@ public partial class Client {
 
 	private string user;
 
-	public bool LoggedIn { get; }
+	public bool LoggedIn {
+		get;
+		private set;
+	}
 
 	public event MessageReceivedEventHandler EventMessageReceived;
 

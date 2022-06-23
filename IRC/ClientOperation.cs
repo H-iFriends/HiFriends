@@ -20,5 +20,9 @@ public partial class Client {
 		return this.SendMessage("NICK", nick) && this.SendMessage("USER", user, "0", "*", ":" + realName);
 	}
 
-	public bool Join(string channel) => this.SendMessage("JOIN", channel);
+	public bool Join(string channel) {
+		if (!this.LoggedIn)
+			return false;
+		return this.SendMessage("JOIN", channel);
+	}
 }
