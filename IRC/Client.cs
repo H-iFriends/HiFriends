@@ -140,6 +140,13 @@ public partial class Client {
 			case MessageType.PRIVMSG:
 				this.HandlePrivMsg(message);
 				break;
+			case MessageType.JOIN:
+				this.HandleJoin(message);
+				break;
+			case MessageType.RPL_NAMREPLY:
+				this.HandleRplNamReply(message);
+				break;
+			
 		}
 	}
 	

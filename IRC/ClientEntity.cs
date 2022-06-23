@@ -8,6 +8,8 @@ public delegate void MessageReceivedEventHandler(object sender, MessageReceivedE
 
 public delegate void MotdReceivedEventHandler(object sender, MotdReceivedEventArgs e);
 
+public delegate void JoinedChannelEventHandler(object sender, JoinedChannelEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
 
@@ -21,6 +23,8 @@ public partial class Client {
 
 	private readonly StringBuilder motd = new();
 
+	private readonly Dictionary<string, string> userListBuffer = new();
+
 	private string nick;
 
 	private string user;
@@ -33,4 +37,6 @@ public partial class Client {
 	public event MessageReceivedEventHandler EventMessageReceived;
 
 	public event MotdReceivedEventHandler EventMotdReceived;
+	
+	public event JoinedChannelEventHandler EventJoinedChannel;
 }
