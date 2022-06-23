@@ -55,7 +55,8 @@ namespace IRC_Wpf
             ChannelWindow channelDialog = new ChannelWindow();
             if (channelDialog.ShowDialog() == true)
             {
-                Console.WriteLine(channelDialog.getChannelName);
+                //执行连接服务器操作
+                /*写在这里*/
             }
             this.Close();
         }

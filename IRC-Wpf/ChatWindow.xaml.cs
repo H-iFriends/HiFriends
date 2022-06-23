@@ -15,7 +15,8 @@ using System.Windows.Shapes;
 namespace IRC_Wpf
 {
     /// <summary>
-    /// ChatWindow.xaml 的交互逻辑
+    /// ChatWindow.xaml 聊天窗口
+    /// 这个里面chatroom的定义是我自己随便定的，chatroom就是channel，后面记得改掉
     /// </summary>
     public partial class ChatWindow : Window
     {
@@ -35,7 +36,7 @@ namespace IRC_Wpf
             AddChatRoomWindow addChatRoomWindow = new AddChatRoomWindow();
             if(addChatRoomWindow.ShowDialog() == true)
             {
-                //获取填入数据
+                //这目前看来不需要填什么
             }
         }
 
@@ -57,17 +58,20 @@ namespace IRC_Wpf
         //初始化窗口（传入数据）
         private void initWindow()
         {
-            //热点聊天室列表数据绑定
-            List<ChatRoom> hotChatRooms = new List<ChatRoom>();
-            hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
-            hotChatRooms.Add(new ChatRoom() { Activity = 33, Topic = "软件构造",Name="课程聊天室" });
-            HotListDataBinding.ItemsSource = hotChatRooms;
+            //热点聊天室列表数据绑定，也是给我一个list然后设置itemssource
+            //List<ChatRoom> hotChatRooms = new List<ChatRoom>();
+            //hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
+            //hotChatRooms.Add(new ChatRoom() { Activity = 33, Topic = "软件构造",Name="课程聊天室" });
+            //HotListDataBinding.ItemsSource = hotChatRooms;
 
-            //已加入聊天室列表数据绑定
-            List<ChatRoom> joinedChatRooms = new List<ChatRoom>();
-            joinedChatRooms.Add(new ChatRoom() { Name = "王者荣耀" });
-            joinedChatRooms.Add(new ChatRoom() { Name = "英雄联盟" });
-            JoinedListDataBinding.ItemsSource = joinedChatRooms;
+            //已加入聊天室列表数据绑定，也是给我一个list然后设置itemssource
+            //List<ChatRoom> joinedChatRooms = new List<ChatRoom>();
+            //joinedChatRooms.Add(new ChatRoom() { Name = "王者荣耀" });
+            //joinedChatRooms.Add(new ChatRoom() { Name = "英雄联盟" });
+            //JoinedListDataBinding.ItemsSource = joinedChatRooms;
+
+            //传入历史聊天记录
+            //ChatHistory.Text = 你传入的string;
         }
     }
 

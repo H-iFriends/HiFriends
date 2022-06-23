@@ -16,7 +16,7 @@ using IRC_Business.Server;
 namespace IRC_Wpf
 {
     /// <summary>
-    /// AddWindow.xaml 的交互逻辑
+    /// AddWindow.xaml 第一次进入时在服务器列表添加服务器
     /// </summary>
     public partial class AddWindow : Window
     {
@@ -27,9 +27,10 @@ namespace IRC_Wpf
         //跳转
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            //这个地方不用再改了，我留了你的版本
             this.DialogResult = true;
-            string serverName = ((TextBox) FindName("HostName")).Text;
-            int serverPort = Int32.Parse(((TextBox) FindName("Port")).Text);
+            string serverName = getHostName;
+            int serverPort = Int32.Parse(getPort);
 
             ServerUtilities serverUtilities = new ServerUtilities();
             serverUtilities.AddServer(serverName, serverPort);
