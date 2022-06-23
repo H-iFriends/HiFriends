@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:IRC_Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <!--样式-->
         <Style x:Key="BtnInfoStyle" TargetType="Button">
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="25"/>
@@ -51,6 +52,15 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <!--点击事件-->
+        <Style TargetType="ListViewItem" x:Key="HotRoomClick">
+            <EventSetter Event="MouseDoubleClick" Handler="HotListViewItem_MouseDoubleClick">
+            </EventSetter>
+        </Style>
+        <Style TargetType="ListViewItem" x:Key="JoinedRoomClick">
+            <EventSetter Event="MouseDoubleClick" Handler="JoinedListViewItem_MouseDoubleClick">
+            </EventSetter>
         </Style>
     </Application.Resources>
 </Application>

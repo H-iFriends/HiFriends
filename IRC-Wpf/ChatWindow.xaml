@@ -6,59 +6,68 @@
         xmlns:local="clr-namespace:IRC_Wpf"
         mc:Ignorable="d"
         Title="ChatWindow" Height="500" Width="800">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="48*"/>
-			<ColumnDefinition Width="7*"/>
-			<ColumnDefinition Width="73*"/>
-			<ColumnDefinition Width="32*"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="2*"/>
-			<RowDefinition Height="6*"/>
-			<RowDefinition Height="3*"/>
-		</Grid.RowDefinitions>
-		<!--左上-->
-		<StackPanel Grid.Column="0" Orientation="Horizontal">
-			<Image Source="Resources/logo.png" />
-			<TextBlock Text="HiFriends" FontWeight="Bold"  Margin="0,20,0,0" Foreground="#1677FE" FontSize="24"/>
-		</StackPanel>
-		<!--左中-->
-		<StackPanel Grid.Column="0" Margin="0,88,0,132" Grid.RowSpan="3" >
-			<ListView Margin="10" Name="ChatRoomList">
-			</ListView>
-
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="48*"/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="73*"/>
+            <ColumnDefinition Width="32*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <!--左上-->
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <Image Source="Resources/logo.png" />
+            <TextBlock Text="HiFriends" FontWeight="Bold"  Margin="0,20,0,0" Foreground="#1677FE" FontSize="24"/>
         </StackPanel>
-		<!--左下-->
-		<StackPanel Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Orientation="Horizontal">
-            <Button Name="addChatRoom" Width="30" Height="30" Click="addChatRoom_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,10,10,10">
-                <Image Source="Resources/icon_add.png"/>
-            </Button>
-            <Button Name="delChatRoom" Width="34" Height="34" Click="delChatRoom_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,10,10,8">
-                <Image Source="Resources/icon_delete.png"/>
-            </Button>
+        <!--左中-->
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" >
+            <ListView Margin="10" Name="JoinedListDataBinding" BorderThickness="0" ItemContainerStyle="{StaticResource JoinedRoomClick}">
+            </ListView>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="addChatRoom" Width="30" Height="30" Click="addChatRoom_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,10,10,10">
+                    <Image Source="Resources/icon_add.png"/>
+                </Button>
+                <Button Name="delChatRoom" Width="34" Height="34" Click="delChatRoom_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,10,10,8">
+                    <Image Source="Resources/icon_delete.png"/>
+                </Button>
+            </StackPanel>
         </StackPanel>
-		<!--中上-->
-		<StackPanel Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Background="#F5f5f5" Margin="5,5,5,5">
-			<TextBlock FontSize="24" FontWeight="Bold" Foreground="#1677FE" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,20,0,0" Height="Auto">
+        <!--左下-->
+        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Top" Width="240">
+            <TextBlock FontSize="15" Foreground="#1677FE" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" FontWeight="Bold">
+				其他聊天室推荐
+            </TextBlock>
+            <ListView Margin="10,5,10,5" Name="HotListDataBinding" ItemContainerStyle="{StaticResource HotRoomClick}" BorderThickness="0"
+                      SelectionChanged="HotListDataBinding_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="热门话题" Width="145" DisplayMemberBinding="{Binding Topic}" />
+                        <GridViewColumn Header="活跃度" Width="70" DisplayMemberBinding="{Binding Activity}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        <!--中上-->
+        <StackPanel Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Background="#F5f5f5" Margin="5,5,5,5">
+            <TextBlock FontSize="24" FontWeight="Bold" Foreground="#1677FE" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,20,0,0" Height="Auto">
 				聊天室1
-			</TextBlock>
-		</StackPanel>
-		<!--中中-->
-		<StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="0,88,0,132" Grid.RowSpan="3" Width="400" Grid.ColumnSpan="2">
-			<TextBox Name="ChatHistory" BorderThickness="0" Height="267" Background="#F5F5F5" Margin="5,5,5,5" Foreground="Black"/>
-		</StackPanel>
-		<!--中下+右下-->
-		<StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal">
-			<TextBox Name="msg_input" TextWrapping="Wrap" AcceptsReturn="True"  BorderBrush="White" VerticalAlignment="Top" Height="93" Width="282" Margin="5,5,5,5" Foreground="#D3D3D3">信息输入框</TextBox>
-			<Button Content="发送" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" Margin="40,20,40,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
-			<Button Content="一键水群" Style="{StaticResource SecBtnInfoStyle}" Width="80" Height="40" Margin="0,20,50,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
-
-		</StackPanel>
-		<!--右中-->
-		<StackPanel Grid.Column="3" Margin="0,88,0,132" Grid.RowSpan="3">
-			<ListView Margin="0,5,5,5" Name="ChatRoomPeopleList">
-			</ListView>
-		</StackPanel>
-	</Grid>
+            </TextBlock>
+        </StackPanel>
+        <!--中中-->
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3">
+            <TextBox Name="ChatHistory" BorderThickness="0" Background="#F5F5F5" Margin="5,5,5,5" Foreground="Black" Height="254"
+                     InputMethod.IsInputMethodEnabled="False"/>
+        </StackPanel>
+        <!--中下+右下-->
+        <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal">
+            <TextBox Name="msg_input" TextWrapping="Wrap" AcceptsReturn="True"  BorderBrush="White" VerticalAlignment="Top" Height="93" Width="282" Margin="5,5,5,5" Foreground="#D3D3D3">信息输入框</TextBox>
+            <Button Content="发送" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" Margin="40,20,40,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
+            <Button Content="一键水群" Style="{StaticResource SecBtnInfoStyle}" Width="80" Height="40" Margin="0,20,50,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
+        </StackPanel>
+    </Grid>
 </Window>
+
