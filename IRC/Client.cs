@@ -5,36 +5,8 @@ using System.Net.Sockets;
 using System.Text;
 using utils;
 
-public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
+public partial class Client {
 	
-public delegate void MotdReceivedEventHandler(object sender, MotdReceivedEventArgs e);
-
-public class Client {
-	
-	public event MessageReceivedEventHandler EventMessageReceived;
-	
-	public event MotdReceivedEventHandler EventMotdReceived;
-
-	private readonly IPEndPoint remoteEndPoint;
-
-	private readonly Socket socket;
-
-	private string incompleteMessage;
-
-	private string nick;
-
-	private string user;
-	
-	private bool loggedIn;
-	
-	private const int BUFFER_SIZE = 1024;
-	
-	private byte[] buffer = new byte[BUFFER_SIZE];
-	
-	private StringBuilder motd = new StringBuilder();
-
-	public bool LoggedIn => this.loggedIn;
-
 	public Client(string hostName, int port = 6667) {
 		var ipAddressFunc = () => {
 			if (IPAddress.TryParse(hostName, out var ip)) {
@@ -76,26 +48,7 @@ public class Client {
 			return;
 		this.socket.Disconnect(false);
 	}
-
-	public bool Login(string nick, string user, string realName = "", string? password = null) {
-		if (!this.socket.Connected || string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
-			return false;
-
-		if (string.IsNullOrWhiteSpace(realName))
-			realName = "HiFriends IRC Client User";
-		
-		this.nick = nick;
-		this.user = user;
-		
-		if (!this.SendMessage("HELLO"))
-			return false;
-
-		if (!string.IsNullOrWhiteSpace(password) && !this.SendMessage("PASS", password))
-			return false;
-		
-		return this.SendMessage("NICK", nick) && this.SendMessage("USER", user, "0", "*", ":" + realName);
-	}
-
+	
 	public bool SendMessage(string command, params string[] parameters) {
 		if (!this.socket.Connected)
 			return false;
@@ -188,32 +141,5 @@ public class Client {
 				break;
 		}
 	}
-
-	private void HandleMotdStart(Message message) {
-		this.motd.Clear();
-		this.motd.Append(message.Parameters[1]);
-		this.motd.AppendLine();
-	}
 	
-	private void HandleMotd(Message message) {
-		this.motd.Append(message.Parameters[1]);
-		this.motd.AppendLine();
-	}
-	
-	private void HandleEndOfMotd(Message message) {
-		this.motd.Append(message.Parameters[1]);
-		this.motd.AppendLine();
-		this.EventMotdReceived(this, new MotdReceivedEventArgs(this.motd.ToString()));
-	}
-
-	private void HandlePrivMsg(Message message) {
-		var sender = message.Prefix?.GetNick()!;
-		var target = message.Parameters[0];
-		var messageText = message.Parameters[1];
-		this.EventMessageReceived(this, new MessageReceivedEventArgs(sender, target, messageText));
-	}
-	
-	public bool Join(string channel) {
-		return this.SendMessage("JOIN", channel);
-	}
 }
