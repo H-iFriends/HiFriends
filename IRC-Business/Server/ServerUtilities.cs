@@ -75,7 +75,7 @@ namespace IRC_Business.Server
         {
             if (Servers.Count == 0) return;
                 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Server>));
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, Servers);
@@ -84,7 +84,7 @@ namespace IRC_Business.Server
 
         public List<Server> ImportServer(string filePath = "servers.xml")
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<string>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Server>));
             try
             {
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
