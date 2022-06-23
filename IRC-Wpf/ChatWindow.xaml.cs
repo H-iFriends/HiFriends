@@ -78,7 +78,7 @@ namespace IRC_Wpf
         public int Activity { get; set; }
         public string Name { get; set; }
 
-        //展示已加入聊天室列表时需要用到tostring方法
+        //展示列表表项时需要用到tostring方法
         public override string ToString()
         {
             return this.Name;

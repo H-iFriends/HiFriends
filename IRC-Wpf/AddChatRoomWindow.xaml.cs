@@ -33,6 +33,24 @@ namespace IRC_Wpf
         {
             this.Close();   
         }
+        private void searchChannel_Click(object sender, RoutedEventArgs e)
+        {
+
+            string searchWord = searchChannelName.Text;
+            //然后执行搜索操作，返回一个list,备注里我自己新建了一个
+            //List<ChatRoom> searchChatRooms = new List<ChatRoom>();
+            //searchChatRooms.Add(new ChatRoom { Name = "eee" });
+            //SearchListDataBinding.ItemsSource= searchChatRooms;
+        }
+        //选中表项操作
+        private void SearchListDataBinding_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ChatRoom? chatRoomSelected = SearchListDataBinding.SelectedItem as ChatRoom;
+            if (chatRoomSelected != null && chatRoomSelected is ChatRoom)
+            {
+                MessageBox.Show("选中的聊天室:" + chatRoomSelected.Name);
+            }
+        }
 
         public string getHosetName
         {
@@ -44,7 +62,8 @@ namespace IRC_Wpf
         }
         public string getChannelName
         {
-            get { return ChannelName.Text; }      
+            get { return searchChannelName.Text; }      
         }
+
     }
 }

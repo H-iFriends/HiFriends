@@ -25,15 +25,10 @@ namespace IRC_Wpf
         public MainWindow()
         {
             InitializeComponent();
-
-            //从文件中读取保存的server
-            //ImportServer();
-
-            //绑定数据到显示列表中
-            //this.server_list.ItemsSource = Servers;
-
-            
+            init();
         }
+
+        //点击事件
         private void SelectButton_Click(object sender, EventArgs e)
         {
 
@@ -55,9 +50,15 @@ namespace IRC_Wpf
             ChannelWindow channelDialog = new ChannelWindow();
             if (channelDialog.ShowDialog() == true)
             {
-                Console.WriteLine(channelDialog.getChannelName);
+                //执行连接操作
             }
             this.Close();
+        }
+        //数据初始化
+        private void init()
+        {
+            //一个list传进来，展示已添加的服务器
+            //serverList.ItemsSource=你传入list的名字；
         }
         
     }

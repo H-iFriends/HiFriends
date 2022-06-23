@@ -47,7 +47,7 @@
         <!--中右-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,27">
             <TextBlock Height="49"/>
-            <ListBox x:Name="server_list"
+            <ListBox x:Name="serverList"
                      ScrollViewer.VerticalScrollBarVisibility="Visible" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="157">
                 <ListBox.ItemTemplate>
