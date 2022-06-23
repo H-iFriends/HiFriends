@@ -16,13 +16,27 @@ client.EventMessageReceived += (sender, args) => {
 	Console.WriteLine($"\n\nReceived message: from server {c.ServerAddress}\nTarget: [{args.target}]\nMessage: {args.message}");
 };
 
+Console.WriteLine("Connecting to server...");
+
 if (!client.Connect()) Console.WriteLine("Could not connect to server");
+
+Console.WriteLine("Connected to server");
+
+Thread.Sleep(10000);
+
+Console.WriteLine("Logging in...");
 
 if (!client.Login("test", "test")) Console.WriteLine("Could not login");
 
-Thread.Sleep(15000);
+Console.WriteLine("Logged in");
+
+Thread.Sleep(10000);
+
+Console.WriteLine("Joining channel...");
 
 if (!client.Join("#FEFE")) Console.WriteLine("Could not join channel");
+
+Console.WriteLine("Joined channel");
 
 Thread.Sleep(30000);
 

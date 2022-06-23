@@ -32,6 +32,10 @@ public class Prefix {
 			var parts = p.Split('@');
 			nick = parts[0];
 			host = parts[1];
+		} else if (p.Contains('.')) { // Seems to be a hostname
+			return new Prefix(p, "", "", p);
+		} else { // Nickname only
+			return new Prefix(p, p, "", "");
 		}
 
 		if (string.IsNullOrWhiteSpace(nick) || !nick.Contains('!'))
