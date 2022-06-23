@@ -25,4 +25,12 @@ public partial class Client {
 		var messageText = message.Parameters[1];
 		this.EventMessageReceived(this, new MessageReceivedEventArgs(sender, target, messageText));
 	}
+	
+	private void HandleJoin(Message message) {
+		var nick = message.Prefix?.GetNick()!;
+		var user = message.Prefix?.GetUser()!;
+		var host = message.Prefix?.GetHost()!;
+		var joinedChannel = message.Parameters[0];
+		this.EventJoinedChannel(this, new JoinedChannelEventArgs(nick, user, host, joinedChannel));
+	}
 }
