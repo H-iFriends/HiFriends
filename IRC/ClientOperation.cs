@@ -25,4 +25,16 @@ public partial class Client {
 			return false;
 		return this.SendMessage("JOIN", channel);
 	}
+	
+	public bool Privmsg(string target, string message) {
+		if (!this.LoggedIn)
+			return false;
+		return this.SendMessage("PRIVMSG", target, ":" + message);
+	}
+	
+	public bool Part(string channel) {
+		if (!this.LoggedIn)
+			return false;
+		return this.SendMessage("PART", channel);
+	}
 }

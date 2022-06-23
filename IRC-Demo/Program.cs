@@ -43,13 +43,37 @@ if (!client.Login("test", "test")) Console.WriteLine("Could not login");
 
 Console.WriteLine("Logged in");
 
-Thread.Sleep(10000);
+Thread.Sleep(3000);
 
 Console.WriteLine("Joining channel...");
 
 if (!client.Join("#FEFE")) Console.WriteLine("Could not join channel");
 
 Console.WriteLine("Joined channel");
+
+Thread.Sleep(3000);
+
+if (!client.Privmsg("#FEFE", "Hello, World!")) Console.WriteLine("Could not send message");
+
+if (!client.Privmsg("#FEFE", DateTime.Now.ToString())) Console.WriteLine("Could not send message");
+
+if (!client.Privmsg("gugu", "Hello, gugu!")) Console.WriteLine("Could not send message");
+
+Console.WriteLine("Sent message");
+
+Thread.Sleep(3000);
+
+if (!client.Privmsg("#FEFE", "I am leaving!")) Console.WriteLine("Could not send message");
+
+if (!client.Part("#FEFE")) Console.WriteLine("Could not part channel");
+
+Thread.Sleep(3000);
+
+if (!client.Join("#FEFE")) Console.WriteLine("Could not join channel");
+
+Thread.Sleep(3000);
+
+if (!client.Privmsg("#FEFE", "I am back!")) Console.WriteLine("Could not send message");
 
 Thread.Sleep(30000);
 
