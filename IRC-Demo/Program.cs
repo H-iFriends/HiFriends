@@ -16,6 +16,19 @@ client.EventMessageReceived += (sender, args) => {
 	Console.WriteLine($"\n\nReceived message: from server {c.ServerAddress}\nTarget: [{args.target}]\nMessage: {args.message}");
 };
 
+client.EventJoinedChannel += (sender, eventArgs) => {
+	var c = sender as Client;
+	Console.WriteLine($"\n\nJoined channel: from server {c.ServerAddress}\nChannel: {eventArgs.channel}, User: {eventArgs.user}");
+};
+
+client.EventUserListReceived += (sender, eventArgs) => {
+	var c = sender as Client;
+	Console.WriteLine($"\n\nReceived user list: from server {c.ServerAddress}\nChannel: {eventArgs.Channel}");
+	foreach (var user in eventArgs.Users) {
+		Console.WriteLine($"User: {user}");
+	}
+};
+
 Console.WriteLine("Connecting to server...");
 
 if (!client.Connect()) Console.WriteLine("Could not connect to server");

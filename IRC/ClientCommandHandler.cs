@@ -16,14 +16,14 @@ public partial class Client {
 		this.motd.Append(message.Parameters[1]);
 		this.motd.AppendLine();
 		this.LoggedIn = true;
-		this.EventMotdReceived(this, new MotdReceivedEventArgs(this.motd.ToString()));
+		this.EventMotdReceived?.Invoke(this, new MotdReceivedEventArgs(this.motd.ToString()));
 	}
 
 	private void HandlePrivMsg(Message message) {
 		var sender = message.Prefix?.GetNick()!;
 		var target = message.Parameters[0];
 		var messageText = message.Parameters[1];
-		this.EventMessageReceived(this, new MessageReceivedEventArgs(sender, target, messageText));
+		this.EventMessageReceived?.Invoke(this, new MessageReceivedEventArgs(sender, target, messageText));
 	}
 	
 	private void HandleJoin(Message message) {
@@ -31,11 +31,20 @@ public partial class Client {
 		var user = message.Prefix?.GetUser()!;
 		var host = message.Prefix?.GetHost()!;
 		var joinedChannel = message.Parameters[0];
-		this.EventJoinedChannel(this, new JoinedChannelEventArgs(nick, user, host, joinedChannel));
+		this.EventJoinedChannel?.Invoke(this, new JoinedChannelEventArgs(nick, user, host, joinedChannel));
 	}
 
-	private void HandleRplNamReply(Message message) {
+	private void HandleNamReply(Message message) {
 		var channel = message.Parameters[2];
-		var names = message.Parameters[3].Split(' ');
+		if (!this.userListBuffer.ContainsKey(channel))
+			this.userListBuffer.Add(channel, "");
+		this.userListBuffer[channel] += message.Parameters[3].TrimEnd(' ') + " ";
+	}
+
+	private void HandleEndOfNames(Message message) {
+		var channel = message.Parameters[1];
+		var userList = this.userListBuffer[channel];
+		this.EventUserListReceived?.Invoke(this, new UserListReceivedEventArgs(channel, userList.TrimEnd(' ').Split(' ')));
+		this.userListBuffer.Remove(channel);
 	}
 }
