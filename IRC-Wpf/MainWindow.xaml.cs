@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using IRC_Business.Server;
 
 namespace IRC_Wpf
 {
@@ -22,17 +23,16 @@ namespace IRC_Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ServerUtilities ServerUtilities = new ServerUtilities();
         public MainWindow()
         {
             InitializeComponent();
 
             //从文件中读取保存的server
-            //ImportServer();
+            List<Server> servers = ServerUtilities.ImportServer();
 
             //绑定数据到显示列表中
             //this.server_list.ItemsSource = Servers;
-
-            
         }
         private void SelectButton_Click(object sender, EventArgs e)
         {

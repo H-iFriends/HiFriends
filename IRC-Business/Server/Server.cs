@@ -5,6 +5,10 @@ public class Server: IEquatable<Server>
     public string ServerName;
     public int ServerPort;
 
+    public Server()
+    {
+        
+    }
     public Server(string serverName, int serverPort)
     {
         this.ServerName = serverName;

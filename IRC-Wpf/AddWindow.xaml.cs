@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using IRC_Business.Server;
 
 namespace IRC_Wpf
 {
@@ -27,6 +28,12 @@ namespace IRC_Wpf
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+            string serverName = ((TextBox) FindName("HostName")).Text;
+            int serverPort = Int32.Parse(((TextBox) FindName("Port")).Text);
+
+            ServerUtilities serverUtilities = new ServerUtilities();
+            serverUtilities.AddServer(serverName, serverPort);
+            serverUtilities.ExportServer();
         }
         private void ReturnButton_Click(object sender, RoutedEventArgs e)
         {
