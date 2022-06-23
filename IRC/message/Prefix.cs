@@ -13,13 +13,13 @@ public class Prefix {
 		this.host = host;
 	}
 
-	public string getPrefix() => this.prefix;
+	public string GetPrefix() => this.prefix;
 
-	public string getNick() => this.nick;
+	public string GetNick() => this.nick;
 
-	public string getUser() => this.user;
+	public string GetUser() => this.user;
 
-	public string getHost() => this.host;
+	public string GetHost() => this.host;
 
 	public static Prefix of(string p) {
 		if (string.IsNullOrWhiteSpace(p))
@@ -32,6 +32,10 @@ public class Prefix {
 			var parts = p.Split('@');
 			nick = parts[0];
 			host = parts[1];
+		} else if (p.Contains('.')) { // Seems to be a hostname
+			return new Prefix(p, "", "", p);
+		} else { // Nickname only
+			return new Prefix(p, p, "", "");
 		}
 
 		if (string.IsNullOrWhiteSpace(nick) || !nick.Contains('!'))
@@ -42,5 +46,9 @@ public class Prefix {
 		user = parts_[1];
 
 		return new Prefix(p, nick, user, host);
+	}
+
+	public override string ToString() {
+		return $"Prefix: [{this.prefix}], Nick: [{this.nick}], User: [{this.user}], Host: [{this.host}]";
 	}
 }

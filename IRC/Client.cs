@@ -3,9 +3,17 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using utils;
+
+public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
+	
+public delegate void MotdReceivedEventHandler(object sender, MotdReceivedEventArgs e);
 
 public class Client {
-	public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
+	
+	public event MessageReceivedEventHandler EventMessageReceived;
+	
+	public event MotdReceivedEventHandler EventMotdReceived;
 
 	private readonly IPEndPoint remoteEndPoint;
 
@@ -18,12 +26,26 @@ public class Client {
 	private string user;
 	
 	private bool loggedIn;
+	
+	private const int BUFFER_SIZE = 1024;
+	
+	private byte[] buffer = new byte[BUFFER_SIZE];
+	
+	private StringBuilder motd = new StringBuilder();
 
 	public bool LoggedIn => this.loggedIn;
 
 	public Client(string hostName, int port = 6667) {
-		var host = Dns.GetHostEntry(hostName);
-		var ipAddress = host.AddressList[0];
+		var ipAddressFunc = () => {
+			if (IPAddress.TryParse(hostName, out var ip)) {
+				return ip;
+			}
+			var host = Dns.GetHostEntry(hostName);
+			return host.AddressList[0];
+		};
+		
+		var ipAddress = ipAddressFunc();
+		
 		this.remoteEndPoint = new IPEndPoint(ipAddress, port);
 
 		this.socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -44,7 +66,7 @@ public class Client {
 		}
 
 		// Receive data asynchronously
-		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, this.ServerAddress);
+		this.socket.BeginReceive(this.buffer, 0, BUFFER_SIZE, SocketFlags.None, this.ReceiveCallback, null);
 
 		return true;
 	}
@@ -55,7 +77,7 @@ public class Client {
 		this.socket.Disconnect(false);
 	}
 
-	public bool Login(string nick, string user, string realName, string? password = null) {
+	public bool Login(string nick, string user, string realName = "", string? password = null) {
 		if (!this.socket.Connected || string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
 			return false;
 
@@ -105,7 +127,12 @@ public class Client {
 		var received = this.socket.EndReceive(ar);
 		if (received == 0)
 			return;
-		var message = Encoding.UTF8.GetString(new byte[received]);
+
+		var receivedData = this.buffer[..received];
+		
+		Console.WriteLine(HexDump.Get(receivedData, 0, received));
+		
+		var message = Encoding.UTF8.GetString(receivedData);
 
 		// If the message is incomplete, store it and wait for the next message
 		message = this.incompleteMessage + message;
@@ -130,7 +157,7 @@ public class Client {
 		}
 
 		// Receive data asynchronously
-		this.socket.BeginReceive(new byte[1024], 0, 1024, SocketFlags.None, this.ReceiveCallback, null);
+		this.socket.BeginReceive(this.buffer, 0, BUFFER_SIZE, SocketFlags.None, this.ReceiveCallback, null);
 	}
 
 	private void ParseMessage(string message) {
@@ -144,6 +171,49 @@ public class Client {
 	}
 
 	private void HandleMessage(Message message) {
-		Console.WriteLine("Received: " + message.ToString());
+		Console.WriteLine("Received: " + message);
+
+		switch (message.Command) {
+			case MessageType.RPL_MOTDSTART:
+				this.HandleMotdStart(message);
+				break;
+			case MessageType.RPL_MOTD:
+				this.HandleMotd(message);
+				break;
+			case MessageType.RPL_ENDOFMOTD:
+				this.HandleEndOfMotd(message);
+				break;
+			case MessageType.PRIVMSG:
+				this.HandlePrivMsg(message);
+				break;
+		}
+	}
+
+	private void HandleMotdStart(Message message) {
+		this.motd.Clear();
+		this.motd.Append(message.Parameters[1]);
+		this.motd.AppendLine();
+	}
+	
+	private void HandleMotd(Message message) {
+		this.motd.Append(message.Parameters[1]);
+		this.motd.AppendLine();
+	}
+	
+	private void HandleEndOfMotd(Message message) {
+		this.motd.Append(message.Parameters[1]);
+		this.motd.AppendLine();
+		this.EventMotdReceived(this, new MotdReceivedEventArgs(this.motd.ToString()));
+	}
+
+	private void HandlePrivMsg(Message message) {
+		var sender = message.Prefix?.GetNick()!;
+		var target = message.Parameters[0];
+		var messageText = message.Parameters[1];
+		this.EventMessageReceived(this, new MessageReceivedEventArgs(sender, target, messageText));
+	}
+	
+	public bool Join(string channel) {
+		return this.SendMessage("JOIN", channel);
 	}
 }

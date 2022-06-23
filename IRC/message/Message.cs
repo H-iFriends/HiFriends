@@ -28,7 +28,7 @@ public class Message {
 		if (':' == message[0]) {
 			// has a prefix
 			var prefixEnd = message.IndexOf(' ');
-			prefix = Prefix.of(message[1..prefixEnd]);
+			prefix = Prefix.of(message[..prefixEnd]);
 			message = message[(prefixEnd + 1)..];
 		}
 
@@ -59,9 +59,8 @@ public class Message {
 		var sb = new StringBuilder();
 		if (this.Prefix != null)
 			sb.Append(this.Prefix);
-		sb.Append(this.Command.ToString());
-		foreach (var parameter in this.Parameters)
-			sb.Append(' ').Append(parameter);
+		sb.Append(' ');
+		sb.Append($"Command: {this.Command} Parameters: [{string.Join(", ", this.Parameters)}]");
 		return sb.ToString();
 	}
 }
