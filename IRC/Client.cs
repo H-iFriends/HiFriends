@@ -212,4 +212,8 @@ public class Client {
 		var messageText = message.Parameters[1];
 		this.EventMessageReceived(this, new MessageReceivedEventArgs(sender, target, messageText));
 	}
+	
+	public bool Join(string channel) {
+		return this.SendMessage("JOIN", channel);
+	}
 }
