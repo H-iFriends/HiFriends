@@ -19,6 +19,8 @@ public delegate void NickChangedEventHandler(object sender, NickChangedEventArgs
 
 public delegate void NicknameInUseEventHandler(object sender, NicknameInUseEventArgs e);
 
+public delegate void CannotJoinChannelEventHandler(object sender, CannotJoinChannelEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
 
@@ -55,4 +57,6 @@ public partial class Client {
 	public event NickChangedEventHandler EventNickChanged;
 	
 	public event NicknameInUseEventHandler EventNicknameInUse;
+	
+	public event CannotJoinChannelEventHandler EventCannotJoinChannel;
 }

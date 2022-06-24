@@ -75,4 +75,27 @@ public partial class Client {
 		this.EventNicknameInUse?.Invoke(this, new NicknameInUseEventArgs(message.Parameters[1]));
 	}
 	
+	private void CannotJoinChannel(Message message) {
+		string m;
+		switch (message.Command) {
+			case MessageType.ERR_CHANNELISFULL:
+				m = "Channel is full";
+				break;
+			case MessageType.ERR_BANNEDFROMCHAN:
+				m = "You are banned from this channel";
+				break;
+			case MessageType.ERR_INVITEONLYCHAN:
+				m = "This channel is invite only";
+				break;
+			case MessageType.ERR_BADCHANNELKEY:
+				m = "Bad channel key";
+				break;
+			default:
+				m = "Cannot join channel";
+				break;
+		}
+		
+		this.EventCannotJoinChannel?.Invoke(this, new CannotJoinChannelEventArgs(message.Parameters[1], m));
+	}
+	
 }
