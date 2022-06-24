@@ -32,7 +32,7 @@ namespace IRC_Wpf
             //这个地方不用再改了，我留了你的版本
             this.DialogResult = true;
             string serverName = getHostName;
-            int serverPort = Int32.Parse(getPort);
+            int serverPort = int.Parse(getPort);
 
             this.ServerUtilities.AddServer(serverName, serverPort);
             this.ServerUtilities.ExportServer();

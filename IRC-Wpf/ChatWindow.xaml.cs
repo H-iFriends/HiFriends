@@ -55,9 +55,17 @@ namespace IRC_Wpf
             }
         }
 
+        //文本框输入变化
+        //private void msg_input_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+          //  ImageBrush imageBrush = new ImageBrush();
+            //imageBrush.ImageSource
+        //}
+
         //初始化窗口（传入数据）
         private void initWindow()
         {
+
             //热点聊天室列表数据绑定，也是给我一个list然后设置itemssource
             //List<ChatRoom> hotChatRooms = new List<ChatRoom>();
             //hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
