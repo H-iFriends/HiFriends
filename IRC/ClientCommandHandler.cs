@@ -1,5 +1,7 @@
 namespace IRC;
 
+using entity;
+
 public partial class Client {
 	private void HandleMotdStart(Message message) {
 		this.motd.Clear();
@@ -46,5 +48,22 @@ public partial class Client {
 		var userList = this.userListBuffer[channel];
 		this.EventUserListReceived?.Invoke(this, new UserListReceivedEventArgs(channel, userList.TrimEnd(' ').Split(' ')));
 		this.userListBuffer.Remove(channel);
+	}
+	
+	private void HandleRplList(Message message) {
+		var channel = message.Parameters[1];
+		var userCountStr = message.Parameters[2];
+		var topic = message.Parameters.Length >= 4 ? message.Parameters[3] : "";
+
+		if (!int.TryParse(userCountStr, out var userCount)) {
+			// Looks invalid
+			return;
+		}
+
+		this.channelListBuffer.Add(new ChannelInfo(channel, topic, userCount));
+	}
+
+	private void HandleRplListEnd(Message message) {
+		this.EventChannelListReceived?.Invoke(this, new ChannelListReceivedEventArgs(this.channelListBuffer.ToArray()));
 	}
 }
