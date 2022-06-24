@@ -32,12 +32,12 @@ namespace IRC_Business.Server
                 throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
             }
             //此服务器已在列表中
-            if (FindServer(name).Count > 0)
+            if (FindServer(name, port).Count > 0)
                 return;
             Servers.Add(new Server(name, port));
         }
 
-        public void RemoveServer(string s)
+        public void RemoveServer(string s, int port)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -47,7 +47,7 @@ namespace IRC_Business.Server
 
             for (int i = 0; i < Servers.Count;)
             {
-                if (Servers[i].ServerName.Equals(s))
+                if (Servers[i].ServerName.Equals(s) && Servers[i].ServerPort == port)
                 {
                     Servers.Remove(Servers[i]);
                     break;
@@ -57,7 +57,7 @@ namespace IRC_Business.Server
             }
         }
 
-        public ObservableCollection<Server> FindServer(string s)
+        public ObservableCollection<Server> FindServer(string s, int port)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -66,7 +66,7 @@ namespace IRC_Business.Server
             ObservableCollection<Server> res = new ObservableCollection<Server>();
             foreach (Server server in Servers)
             {
-                if (server.ServerName.Contains(s))
+                if (server.ServerName.Contains(s) && server.ServerPort == port)
                     res.Add(server);
             }
             return res;
@@ -74,7 +74,7 @@ namespace IRC_Business.Server
 
         public void ExportServer(string filePath = "servers.xml")
         {
-            if (Servers.Count == 0) return;
+            // if (Servers.Count == 0) return;
                 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Server>));
             using (FileStream fs = new FileStream(filePath, FileMode.Create))

@@ -45,7 +45,7 @@ public class ServerUtilitiesTest
     {
         try
         {
-            ServerUtilities.RemoveServer(" ");
+            ServerUtilities.RemoveServer(" ", 0);
         }
         catch (ArgumentException e)
         {
@@ -54,10 +54,10 @@ public class ServerUtilitiesTest
         
         var list1 = new List<Server>()
             {new("a", 1), new("b", 2), new("aa", 3)};
-        ServerUtilities.RemoveServer("NotExist");
+        ServerUtilities.RemoveServer("NotExist", 0);
         Assert.IsTrue((list1.Count == this.ServerUtilities.Servers.Count) && !list1.Except(this.ServerUtilities.Servers).Any());
 
-        ServerUtilities.RemoveServer("a");
+        ServerUtilities.RemoveServer("a", 1);
         list1.Remove(new("a", 1));
         Assert.IsTrue((list1.Count == this.ServerUtilities.Servers.Count) && !list1.Except(this.ServerUtilities.Servers).Any());
     }
@@ -67,15 +67,15 @@ public class ServerUtilitiesTest
     {
         try
         {
-            ServerUtilities.FindServer(" ");
+            ServerUtilities.FindServer(" ", 0);
         }
         catch (ArgumentException e)
         {
             Assert.AreEqual("Server name cannot be empty or consist of only white-space.", e.Message);
         }
 
-        var servers = ServerUtilities.FindServer("a");
-        var list1 = new List<Server>() {new("a", 1), new("aa", 3)};
+        var servers = ServerUtilities.FindServer("a", 1);
+        var list1 = new List<Server>() {new("a", 1)};
         Assert.IsTrue((list1.Count == servers.Count) && !list1.Except(servers).Any());
 
     }
