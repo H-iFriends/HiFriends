@@ -129,13 +129,13 @@ public partial class Client {
 
 		switch (message.Command) {
 			case MessageType.RPL_MOTDSTART:
-				this.HandleMotdStart(message);
+				this.HandleRplMotdStart(message);
 				break;
 			case MessageType.RPL_MOTD:
-				this.HandleMotd(message);
+				this.HandleRplMotd(message);
 				break;
 			case MessageType.RPL_ENDOFMOTD:
-				this.HandleEndOfMotd(message);
+				this.HandleRplEndOfMotd(message);
 				break;
 			case MessageType.PRIVMSG:
 				this.HandlePrivMsg(message);
@@ -144,10 +144,16 @@ public partial class Client {
 				this.HandleJoin(message);
 				break;
 			case MessageType.RPL_NAMREPLY:
-				this.HandleNamReply(message);
+				this.HandleRplNamReply(message);
 				break;
 			case MessageType.RPL_ENDOFNAMES:
-				this.HandleEndOfNames(message);
+				this.HandleRplEndOfNames(message);
+				break;
+			case MessageType.RPL_LIST:
+				this.HandleRplList(message);
+				break;
+			case MessageType.RPL_LISTEND:
+				this.HandleRplListEnd(message);
 				break;
 		}
 	}

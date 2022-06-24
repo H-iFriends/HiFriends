@@ -3,18 +3,18 @@ namespace IRC;
 using entity;
 
 public partial class Client {
-	private void HandleMotdStart(Message message) {
+	private void HandleRplMotdStart(Message message) {
 		this.motd.Clear();
 		this.motd.Append(message.Parameters[1]);
 		this.motd.AppendLine();
 	}
 
-	private void HandleMotd(Message message) {
+	private void HandleRplMotd(Message message) {
 		this.motd.Append(message.Parameters[1]);
 		this.motd.AppendLine();
 	}
 
-	private void HandleEndOfMotd(Message message) {
+	private void HandleRplEndOfMotd(Message message) {
 		this.motd.Append(message.Parameters[1]);
 		this.motd.AppendLine();
 		this.LoggedIn = true;
@@ -36,14 +36,14 @@ public partial class Client {
 		this.EventJoinedChannel?.Invoke(this, new JoinedChannelEventArgs(nick, user, host, joinedChannel));
 	}
 
-	private void HandleNamReply(Message message) {
+	private void HandleRplNamReply(Message message) {
 		var channel = message.Parameters[2];
 		if (!this.userListBuffer.ContainsKey(channel))
 			this.userListBuffer.Add(channel, "");
 		this.userListBuffer[channel] += message.Parameters[3].TrimEnd(' ') + " ";
 	}
 
-	private void HandleEndOfNames(Message message) {
+	private void HandleRplEndOfNames(Message message) {
 		var channel = message.Parameters[1];
 		var userList = this.userListBuffer[channel];
 		this.EventUserListReceived?.Invoke(this, new UserListReceivedEventArgs(channel, userList.TrimEnd(' ').Split(' ')));
