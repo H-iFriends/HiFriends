@@ -43,5 +43,7 @@ public enum MessageType {
 	RPL_LUSERME = 255,
 	RPL_NAMREPLY = 353,
 	RPL_ENDOFNAMES = 366,
+	RPL_LIST = 322,
+	RPL_LISTEND = 323,
 	
 }

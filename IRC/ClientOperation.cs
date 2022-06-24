@@ -37,4 +37,13 @@ public partial class Client {
 			return false;
 		return this.SendMessage("PART", channel);
 	}
+	
+	public bool List(params string[] channels) {
+		if (!this.LoggedIn)
+			return false;
+		if (channels.Length == 0)
+			return this.SendMessage("LIST");
+		else
+			return this.SendMessage("LIST", string.Join(",", channels));
+	}
 }

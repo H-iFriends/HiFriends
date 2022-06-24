@@ -3,6 +3,7 @@ namespace IRC;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using entity;
 
 public delegate void MessageReceivedEventHandler(object sender, MessageReceivedEventArgs e);
 
@@ -11,6 +12,8 @@ public delegate void MotdReceivedEventHandler(object sender, MotdReceivedEventAr
 public delegate void JoinedChannelEventHandler(object sender, JoinedChannelEventArgs e);
 
 public delegate void UserListReceivedEventHandler(object sender, UserListReceivedEventArgs e);
+
+public delegate void ChannelListReceivedEventHandler(object sender, ChannelListReceivedEventArgs e);
 
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
@@ -26,6 +29,8 @@ public partial class Client {
 	private readonly StringBuilder motd = new();
 
 	private readonly Dictionary<string, string> userListBuffer = new();
+
+	private readonly List<ChannelInfo> channelListBuffer = new();
 
 	private string nick;
 
@@ -43,4 +48,6 @@ public partial class Client {
 	public event JoinedChannelEventHandler EventJoinedChannel;
 	
 	public event UserListReceivedEventHandler EventUserListReceived;
+	
+	public event ChannelListReceivedEventHandler EventChannelListReceived;
 }

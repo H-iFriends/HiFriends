@@ -73,6 +73,8 @@ if (!client.Join("#FEFE")) Console.WriteLine("Could not join channel");
 
 Thread.Sleep(3000);
 
+if (!client.List()) Console.WriteLine("Could not list channels");
+
 if (!client.Privmsg("#FEFE", "I am back!")) Console.WriteLine("Could not send message");
 
 Thread.Sleep(30000);
