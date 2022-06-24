@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,14 +13,14 @@ namespace IRC_Business.Server
      */
     public class ServerUtilities
     {
-        public List<Server> Servers { get; }
+        public ObservableCollection<Server> Servers;
 
         public ServerUtilities()
         {
-            Servers = new List<Server>();
+            Servers = new ObservableCollection<Server>();
         }
 
-        public ServerUtilities(List<Server> servers)
+        public ServerUtilities(ObservableCollection<Server> servers)
         {
             Servers = servers;
         }
@@ -56,13 +57,13 @@ namespace IRC_Business.Server
             }
         }
 
-        public List<Server> FindServer(string s)
+        public ObservableCollection<Server> FindServer(string s)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
                 throw new ArgumentException("Server name cannot be empty or consist of only white-space.");
             }
-            List<Server> res = new List<Server>();
+            ObservableCollection<Server> res = new ObservableCollection<Server>();
             foreach (Server server in Servers)
             {
                 if (server.ServerName.Contains(s))
@@ -75,27 +76,27 @@ namespace IRC_Business.Server
         {
             if (Servers.Count == 0) return;
                 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Server>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Server>));
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
                 xmlSerializer.Serialize(fs, Servers);
             }
         }
 
-        public List<Server> ImportServer(string filePath = "servers.xml")
+        public ObservableCollection<Server> ImportServer(string filePath = "servers.xml")
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Server>));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ObservableCollection<Server>));
             try
             {
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
-                    return (List<Server>)xmlSerializer.Deserialize(fs);
+                    return (ObservableCollection<Server>)xmlSerializer.Deserialize(fs);
                 }
             }
             catch (FileNotFoundException e)
             {
                 Console.WriteLine("File \"servers.xml\" not found.");
-                return new List<Server>();
+                return new ObservableCollection<Server>();
             }
         }
     }

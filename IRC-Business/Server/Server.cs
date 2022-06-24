@@ -31,4 +31,9 @@ public class Server: IEquatable<Server>
     {
         return this.ServerPort.GetHashCode() + this.ServerName.GetHashCode();
     }
+
+    public override string ToString()
+    {
+        return ServerName + "\t" + ServerPort;
+    }
 }

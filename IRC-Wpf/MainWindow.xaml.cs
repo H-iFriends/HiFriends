@@ -24,15 +24,21 @@ namespace IRC_Wpf
     public partial class MainWindow : Window
     {
         public ServerUtilities ServerUtilities = new ServerUtilities();
+
         public MainWindow()
         {
             InitializeComponent();
 
             //从文件中读取保存的server
-            List<Server> servers = ServerUtilities.ImportServer();
-
+            this.ServerUtilities.Servers = ServerUtilities.ImportServer();
+            // servers = new List<Server>() {new("a", 1), new("b", 2)};
             //绑定数据到显示列表中
-            //this.server_list.ItemsSource = Servers;
+            
+                this.serverList.DataContext = this.ServerUtilities.Servers;
+                // this.serverList.DisplayMemberPath = "ServerName";
+           
+          
+            
         }
         private void SelectButton_Click(object sender, EventArgs e)
         {
@@ -41,12 +47,15 @@ namespace IRC_Wpf
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddWindow addDialog = new AddWindow();
+            AddWindow addDialog = new AddWindow(this.ServerUtilities);
             if (addDialog.ShowDialog() == true)
             {
                 //获取数据
                 Console.WriteLine(addDialog.getHostName);
                 Console.WriteLine(addDialog.getPort);
+                
+                //重新导入一次服务器列表
+                this.ServerUtilities.Servers = ServerUtilities.ImportServer();
             }
         }
 
@@ -60,6 +69,10 @@ namespace IRC_Wpf
             }
             this.Close();
         }
-        
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

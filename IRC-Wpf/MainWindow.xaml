@@ -40,25 +40,29 @@
             <TextBlock/>
             <Button Content="添加" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25" Click="AddButton_Click"/>
             <TextBlock Height="30"/>
-            <Button Content="移除" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25"/>
+            <Button Content="移除" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25" Click="RemoveButton_Click"/>
             <TextBlock Height="30"/>
             <Button Content="编辑" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25"/>
         </StackPanel>
         <!--中右-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,27">
             <TextBlock Height="49"/>
-            <ListBox x:Name="serverList"
+            <ListBox x:Name="serverList" ItemsSource="{Binding}"
                      ScrollViewer.VerticalScrollBarVisibility="Visible" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="157">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Button Click="SelectButton_Click">
-                            <Grid>
-                                <TextBlock Text="{Binding Path=server_name}" Margin="70 10" FontSize="18"/>
-                            </Grid>
-                        </Button>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                <!-- <ListBox.ItemTemplate> -->
+                <!--     <DataTemplate> -->
+                <!--             ~1~ <Button Click="SelectButton_Click"> @1@ -->
+                <!--             ~1~ <Grid> @1@ -->
+                <!--                 <TextBlock Text="{Binding Path=ServerName}" Margin="70 10" FontSize="18"/> -->
+                <!--             <TextBlock Text="{Binding Path=ServerPort}" Margin="70 10" FontSize="18"/> -->
+                <!-- -->
+                <!--             ~1~ </Grid> @1@ -->
+                <!--             ~1~ </Button> @1@ -->
+                <!--          -->
+                <!--          -->
+                <!--     </DataTemplate> -->
+                <!-- </ListBox.ItemTemplate> -->
             </ListBox>
         </StackPanel>
         <!--下-->

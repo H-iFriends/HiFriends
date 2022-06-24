@@ -59,7 +59,7 @@
         </StackPanel>
         <!--中中-->
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3">
-            <TextBlock Name="ChatHistory" BorderThickness="0" Background="#F5F5F5" Margin="5,5,5,5" Foreground="Black" Height="254"
+            <TextBlock Name="ChatHistory" Background="#F5F5F5" Margin="5,5,5,5" Foreground="Black" Height="254"
                      InputMethod.IsInputMethodEnabled="False"/>
         </StackPanel>
         <!--中下+右下-->

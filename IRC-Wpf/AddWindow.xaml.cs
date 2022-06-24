@@ -20,9 +20,11 @@ namespace IRC_Wpf
     /// </summary>
     public partial class AddWindow : Window
     {
-        public AddWindow()
+        public ServerUtilities ServerUtilities { get; set; }
+        public AddWindow(ServerUtilities serverUtilities)
         {
             InitializeComponent();
+            this.ServerUtilities = serverUtilities;
         }
         //跳转
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -32,9 +34,8 @@ namespace IRC_Wpf
             string serverName = getHostName;
             int serverPort = Int32.Parse(getPort);
 
-            ServerUtilities serverUtilities = new ServerUtilities();
-            serverUtilities.AddServer(serverName, serverPort);
-            serverUtilities.ExportServer();
+            this.ServerUtilities.AddServer(serverName, serverPort);
+            this.ServerUtilities.ExportServer();
         }
         private void ReturnButton_Click(object sender, RoutedEventArgs e)
         {

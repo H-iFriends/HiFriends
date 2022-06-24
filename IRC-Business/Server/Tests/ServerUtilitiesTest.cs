@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.ObjectModel;
 
 namespace IRC_Business.Server.Tests;
 
@@ -10,7 +11,7 @@ public class ServerUtilitiesTest
     [TestInitialize]
     public void Init()
     {
-        this.ServerUtilities = new ServerUtilities(new List<Server>()
+        this.ServerUtilities = new ServerUtilities(new ObservableCollection<Server>()
             {new("a", 1), new("b", 2), new("aa", 3)});
     }
     
