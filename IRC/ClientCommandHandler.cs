@@ -27,7 +27,7 @@ public partial class Client {
 		var messageText = message.Parameters[1];
 		this.EventMessageReceived?.Invoke(this, new MessageReceivedEventArgs(sender, target, messageText));
 	}
-	
+
 	private void HandleJoin(Message message) {
 		var nick = message.Prefix?.GetNick()!;
 		var user = message.Prefix?.GetUser()!;
@@ -49,21 +49,25 @@ public partial class Client {
 		this.EventUserListReceived?.Invoke(this, new UserListReceivedEventArgs(channel, userList.TrimEnd(' ').Split(' ')));
 		this.userListBuffer.Remove(channel);
 	}
-	
+
 	private void HandleRplList(Message message) {
 		var channel = message.Parameters[1];
 		var userCountStr = message.Parameters[2];
 		var topic = message.Parameters.Length >= 4 ? message.Parameters[3] : "";
 
-		if (!int.TryParse(userCountStr, out var userCount)) {
-			// Looks invalid
+		if (!int.TryParse(userCountStr, out var userCount)) // Looks invalid
 			return;
-		}
 
 		this.channelListBuffer.Add(new ChannelInfo(channel, topic, userCount));
 	}
 
 	private void HandleRplListEnd(Message message) {
 		this.EventChannelListReceived?.Invoke(this, new ChannelListReceivedEventArgs(this.channelListBuffer.ToArray()));
+	}
+
+	private void HandleNick(Message message) {
+		var oldNick = message.Prefix?.GetNick()!;
+		var newNick = message.Parameters[0];
+		this.EventNickChanged?.Invoke(this, new NickChangedEventArgs(oldNick, newNick));
 	}
 }

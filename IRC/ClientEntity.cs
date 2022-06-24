@@ -15,39 +15,40 @@ public delegate void UserListReceivedEventHandler(object sender, UserListReceive
 
 public delegate void ChannelListReceivedEventHandler(object sender, ChannelListReceivedEventArgs e);
 
+public delegate void NickChangedEventHandler(object sender, NickChangedEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
+
+	private readonly byte[] buffer = new byte[BUFFER_SIZE];
+
+	private readonly List<ChannelInfo> channelListBuffer = new();
+
+	private readonly StringBuilder motd = new();
 
 	private readonly IPEndPoint remoteEndPoint;
 
 	private readonly Socket socket;
 
-	private readonly byte[] buffer = new byte[BUFFER_SIZE];
-
-	private string incompleteMessage;
-
-	private readonly StringBuilder motd = new();
-
 	private readonly Dictionary<string, string> userListBuffer = new();
 
-	private readonly List<ChannelInfo> channelListBuffer = new();
+	private string incompleteMessage;
 
 	private string nick;
 
 	private string user;
 
-	public bool LoggedIn {
-		get;
-		private set;
-	}
+	public bool LoggedIn { get; private set; }
 
 	public event MessageReceivedEventHandler EventMessageReceived;
 
 	public event MotdReceivedEventHandler EventMotdReceived;
-	
+
 	public event JoinedChannelEventHandler EventJoinedChannel;
-	
+
 	public event UserListReceivedEventHandler EventUserListReceived;
-	
+
 	public event ChannelListReceivedEventHandler EventChannelListReceived;
+
+	public event NickChangedEventHandler EventNickChanged;
 }
