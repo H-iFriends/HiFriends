@@ -158,6 +158,12 @@ public partial class Client {
 			case MessageType.ERR_NICKNAMEINUSE:
 				this.HandleErrNicknameInUse(message);
 				break;
+			case MessageType.ERR_CHANNELISFULL:
+			case MessageType.ERR_BANNEDFROMCHAN:
+			case MessageType.ERR_INVITEONLYCHAN:
+			case MessageType.ERR_BADCHANNELKEY:
+				this.HandleCannotJoinChannel(message);
+				break;
 		}
 	}
 }

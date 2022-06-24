@@ -75,7 +75,11 @@ public partial class Client {
 		this.EventNicknameInUse?.Invoke(this, new NicknameInUseEventArgs(message.Parameters[1]));
 	}
 	
-	private void CannotJoinChannel(Message message) {
+	private void HandleNoSuchNick(Message message) {
+		this.EventNoSuchNick?.Invoke(this, new NoSuchNickEventArgs(message.Parameters[1]));
+	}
+	
+	private void HandleCannotJoinChannel(Message message) {
 		string m;
 		switch (message.Command) {
 			case MessageType.ERR_CHANNELISFULL:
