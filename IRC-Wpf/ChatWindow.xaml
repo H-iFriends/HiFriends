@@ -64,7 +64,24 @@
         </StackPanel>
         <!--中下+右下-->
         <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal">
-            <TextBox Name="msg_input" TextWrapping="Wrap" AcceptsReturn="True"  BorderBrush="White" VerticalAlignment="Top" Height="93" Width="282" Margin="5,5,5,5" Foreground="#D3D3D3">信息输入框</TextBox>
+            <TextBox Name="msg_input" TextWrapping="Wrap" AcceptsReturn="True"  BorderBrush="White" VerticalAlignment="Top" Height="93" Width="282" Margin="5,5,5,5" Foreground="Black">
+                <TextBox.Resources>
+                    <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="1" Stretch="None" AlignmentX="Left" AlignmentY="Top">
+                        <VisualBrush.Visual>
+                            <TextBlock Text="请输入消息内容" Foreground="#D3D3D3"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </TextBox.Resources>
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
             <Button Content="发送" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" Margin="40,20,40,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
             <Button Content="一键水群" Style="{StaticResource SecBtnInfoStyle}" Width="80" Height="40" Margin="0,20,50,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
         </StackPanel>
