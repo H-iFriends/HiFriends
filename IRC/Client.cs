@@ -6,18 +6,15 @@ using System.Text;
 using utils;
 
 public partial class Client {
-	
 	public Client(string hostName, int port = 6667) {
 		var ipAddressFunc = () => {
-			if (IPAddress.TryParse(hostName, out var ip)) {
-				return ip;
-			}
+			if (IPAddress.TryParse(hostName, out var ip)) return ip;
 			var host = Dns.GetHostEntry(hostName);
 			return host.AddressList[0];
 		};
-		
+
 		var ipAddress = ipAddressFunc();
-		
+
 		this.remoteEndPoint = new IPEndPoint(ipAddress, port);
 
 		this.socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -49,7 +46,7 @@ public partial class Client {
 		this.LoggedIn = false;
 		this.socket.Disconnect(false);
 	}
-	
+
 	public bool SendMessage(string command, params string[] parameters) {
 		if (!this.socket.Connected)
 			return false;
@@ -60,7 +57,7 @@ public partial class Client {
 		message.Append("\r\n");
 		return this.Send(message.ToString());
 	}
- 
+
 	public bool Send(string message) {
 		if (!this.socket.Connected)
 			return false;
@@ -83,9 +80,9 @@ public partial class Client {
 			return;
 
 		var receivedData = this.buffer[..received];
-		
+
 		Console.WriteLine(HexDump.Get(receivedData, 0, received));
-		
+
 		var message = Encoding.UTF8.GetString(receivedData);
 
 		// If the message is incomplete, store it and wait for the next message
@@ -120,7 +117,7 @@ public partial class Client {
 		var messageObj = Message.parse(message);
 		if (messageObj == null)
 			return;
-		
+
 		this.HandleMessage(messageObj);
 	}
 
@@ -155,7 +152,12 @@ public partial class Client {
 			case MessageType.RPL_LISTEND:
 				this.HandleRplListEnd(message);
 				break;
+			case MessageType.NICK:
+				this.HandleNick(message);
+				break;
+			case MessageType.ERR_NICKNAMEINUSE:
+				this.HandleErrNicknameInUse(message);
+				break;
 		}
 	}
-	
 }

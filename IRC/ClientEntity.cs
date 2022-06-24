@@ -17,6 +17,8 @@ public delegate void ChannelListReceivedEventHandler(object sender, ChannelListR
 
 public delegate void NickChangedEventHandler(object sender, NickChangedEventArgs e);
 
+public delegate void NicknameInUseEventHandler(object sender, NicknameInUseEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
 
@@ -51,4 +53,6 @@ public partial class Client {
 	public event ChannelListReceivedEventHandler EventChannelListReceived;
 
 	public event NickChangedEventHandler EventNickChanged;
+	
+	public event NicknameInUseEventHandler EventNicknameInUse;
 }

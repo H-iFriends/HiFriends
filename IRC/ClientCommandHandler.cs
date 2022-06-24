@@ -70,4 +70,9 @@ public partial class Client {
 		var newNick = message.Parameters[0];
 		this.EventNickChanged?.Invoke(this, new NickChangedEventArgs(oldNick, newNick));
 	}
+
+	private void HandleErrNicknameInUse(Message message) {
+		this.EventNicknameInUse?.Invoke(this, new NicknameInUseEventArgs(message.Parameters[1]));
+	}
+	
 }
