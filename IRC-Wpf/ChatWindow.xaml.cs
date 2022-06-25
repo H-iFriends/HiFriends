@@ -72,13 +72,18 @@ namespace IRC_Wpf
                         acticity++;
                     }
                 }
+
                 this.CurrentChannel.Activity = acticity;
 
                 //更改主题词
                 var topics = NLP.GetKeywords(CurrentChannel.ContentHistory);
                 if (topics.Length > 0)
                 {
-                    this.CurrentChannel.Topic = topics[0];
+                    this.CurrentChannel.Topic = "";
+                    for (int i = 0; i < 3 && i < topics.Length; ++i)
+                    {
+                        this.CurrentChannel.Topic += topics[i] + " ";
+                    }
                 }
 
                 HotListDataBinding.ItemsSource = null;
@@ -125,18 +130,25 @@ namespace IRC_Wpf
                     acticity++;
                 }
             }
+
             this.CurrentChannel.Activity = acticity;
 
-            // 更改主题词
-            var topics = NLP.GetKeywords(this.CurrentChannel.ContentHistory);
+            
+            //更改主题词
+            var topics = NLP.GetKeywords(CurrentChannel.ContentHistory);
             if (topics.Length > 0)
             {
-                this.CurrentChannel.Topic = topics[0];
-                HotListDataBinding.ItemsSource = null;
-                HotListDataBinding.Items.Refresh();
-                HotListDataBinding.ItemsSource = this.Channels;
-                HotListDataBinding.Items.Refresh();
+                this.CurrentChannel.Topic = "";
+                for (int i = 0; i < 3 && i < topics.Length; ++i)
+                {
+                    this.CurrentChannel.Topic += topics[i] + " ";
+                }
             }
+
+            HotListDataBinding.ItemsSource = null;
+            HotListDataBinding.Items.Refresh();
+            HotListDataBinding.ItemsSource = this.Channels;
+            HotListDataBinding.Items.Refresh();
         }
 
         private void quickSend_Click(object sender, RoutedEventArgs e)
@@ -159,6 +171,11 @@ namespace IRC_Wpf
 
                 channel.Activity = activity;
             }
+            
+            HotListDataBinding.ItemsSource = null;
+            HotListDataBinding.Items.Refresh();
+            HotListDataBinding.ItemsSource = this.Channels;
+            HotListDataBinding.Items.Refresh();
 
             Dispatcher.BeginInvoke(new Action(() => { this.ChatHistory.Text = this.CurrentChannel.ChatHistory; }));
         }
@@ -246,18 +263,24 @@ namespace IRC_Wpf
                             acticity++;
                         }
                     }
+
                     this.CurrentChannel.Activity = acticity;
 
-                    // 更改主题词
-                    var topics = NLP.GetKeywords(this.CurrentChannel.ContentHistory);
+                    //更改主题词
+                    var topics = NLP.GetKeywords(CurrentChannel.ContentHistory);
                     if (topics.Length > 0)
                     {
-                        this.CurrentChannel.Topic = topics[0];
-                        HotListDataBinding.ItemsSource = null;
-                        HotListDataBinding.Items.Refresh();
-                        HotListDataBinding.ItemsSource = this.Channels;
-                        HotListDataBinding.Items.Refresh();
+                        this.CurrentChannel.Topic = "";
+                        for (int i = 0; i < 3 && i < topics.Length; ++i)
+                        {
+                            this.CurrentChannel.Topic += topics[i] + " ";
+                        }
                     }
+
+                    HotListDataBinding.ItemsSource = null;
+                    HotListDataBinding.Items.Refresh();
+                    HotListDataBinding.ItemsSource = this.Channels;
+                    HotListDataBinding.Items.Refresh();
                 }));
             };
 
