@@ -79,6 +79,10 @@ public partial class Client {
 		this.EventNoSuchNick?.Invoke(this, new NoSuchNickEventArgs(message.Parameters[1]));
 	}
 	
+	private void HandleErrNotOnChannel(Message message) {
+		this.EventNotOnChannel?.Invoke(this, new NotOnChannelEventArgs(message.Parameters[1]));
+	}
+	
 	private void HandleCannotJoinChannel(Message message) {
 		string m;
 		switch (message.Command) {

@@ -25,6 +25,8 @@ public delegate void NoSuchNickEventHandler(object sender, NoSuchNickEventArgs e
 
 public delegate void ErrorEventHandler(object sender, ErrorEventArgs e);
 
+public delegate void NotOnChannelEventHandler(object sender, NotOnChannelEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
 
@@ -67,5 +69,7 @@ public partial class Client {
 	public event NoSuchNickEventHandler EventNoSuchNick;
 	
 	public event ErrorEventHandler EventError;
+	
+	public event NotOnChannelEventHandler EventNotOnChannel;
 	
 }

@@ -180,6 +180,9 @@ public partial class Client
 			case MessageType.ERR_NOSUCHNICK:
 				this.HandleErrNoSuchNick(message);
 				break;
+			case MessageType.ERR_NOTONCHANNEL:
+				this.HandleErrNotOnChannel(message);
+				break;
 		}
 	}
 }
