@@ -65,6 +65,10 @@ public partial class Client {
 		this.EventChannelListReceived?.Invoke(this, new ChannelListReceivedEventArgs(this.channelListBuffer.ToArray()));
 	}
 
+	private void HandlePing(Message message) {
+		this.SendMessage("PONG", message.Parameters[0]);
+	}
+	
 	private void HandleNick(Message message) {
 		var oldNick = message.Prefix?.GetNick()!;
 		var newNick = message.Parameters[0];

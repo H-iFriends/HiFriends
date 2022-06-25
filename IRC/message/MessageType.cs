@@ -8,6 +8,7 @@ public enum MessageType {
 	QUIT,
 	NICK,
 	MODE,
+	PING,
 
 	// Server messages
 	ERR_NEEDMOREPARAMS = 461,

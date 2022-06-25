@@ -137,6 +137,9 @@ public partial class Client
 		Console.WriteLine("Received: " + message);
 
 		switch (message.Command) {
+			case MessageType.PING:
+				this.HandlePing(message);
+				break;
 			case MessageType.RPL_MOTDSTART:
 				this.HandleRplMotdStart(message);
 				break;
