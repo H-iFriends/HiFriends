@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
 using IRC_Business.Server;
+using IRC;
+using IRC.entity;
 
 namespace IRC_Wpf
 {
@@ -24,6 +26,9 @@ namespace IRC_Wpf
     public partial class MainWindow : Window
     {
         public ServerUtilities ServerUtilities = new ServerUtilities();
+
+        private Client Client;
+        // private UserInfo UserInfo;
 
         public MainWindow()
         {
@@ -70,12 +75,47 @@ namespace IRC_Wpf
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
-            ChannelWindow channelDialog = new ChannelWindow();
-            if (channelDialog.ShowDialog() == true)
+            Server? server = serverList.SelectedItem as Server;
+            if (server == null)
             {
-                //执行连接服务器操作
-                /*写在这里*/
+                //弹窗
+                
+                throw new ArgumentException();
             }
+
+            string hostName = server.ServerName;
+            int port = server.ServerPort;
+
+            //执行连接服务器操作
+            this.Client = new Client(hostName, port);
+            if (!this.Client.Connect())
+            {
+                throw new Exception("Connection failed.");
+                
+            }
+
+            string user = this.userName.Text;
+            string nick = this.nickName.Text;
+            string realName = this.realName.Text;
+            string? password = this.password.Text;
+            if (string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
+            {
+                throw new ArgumentException("Invalid nick name or user name.");
+            }
+
+            //登录
+            // this.UserInfo = new UserInfo(user, nick, realName, password);
+            if (!this.Client.Login(nick, user, realName, password))
+            {
+                throw new Exception("Login failed.");
+            }
+
+            ChannelWindow channelDialog = new ChannelWindow(this.Client);
+            // if (channelDialog.ShowDialog() == true)
+            // {
+            //     
+            //     
+            // }
 
             this.Close();
         }
