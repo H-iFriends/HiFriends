@@ -54,13 +54,22 @@ namespace IRC_Wpf
                 MessageBox.Show("选中的聊天室:" + chatRoomSelected.Name);
             }
         }
+        //文本框内容发生变化时，自动补全功能生效
+        private void msg_input_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string textInputed = this.msg_input.Text;
+            //然后调用函数
+            //展示回传list
+            //this.autoCompletionDataBinding.DataContext = 你的list
+        }
+        //列表双击选中后，自动补全
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //获得选中表项的string
+            string? autoCompletion = this.autoCompletionDataBinding.SelectedItem as string; 
+            //this.msg_input.Text = 回传的string
 
-        //文本框输入变化
-        //private void msg_input_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-          //  ImageBrush imageBrush = new ImageBrush();
-            //imageBrush.ImageSource
-        //}
+        }
 
         //初始化窗口（传入数据）
         private void initWindow()

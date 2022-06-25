@@ -52,7 +52,7 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinHeight="140" MaxHeight="140">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="Template">
+                      <!--  <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
                                     <Border Background="#F5F5F5">
@@ -61,9 +61,8 @@
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
-                        </Setter>
+                        </Setter>-->
                         <Setter Property="Height" Value="30">
-                            
                         </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>

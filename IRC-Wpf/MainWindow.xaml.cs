@@ -82,7 +82,7 @@ namespace IRC_Wpf
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            Server toRemove = this.serverList.SelectedItem as Server;
+            Server? toRemove = this.serverList.SelectedItem as Server;
             if (toRemove != null)
             {
                 this.ServerUtilities.RemoveServer(toRemove.ServerName, toRemove.ServerPort);
