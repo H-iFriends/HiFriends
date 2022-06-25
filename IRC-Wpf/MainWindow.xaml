@@ -12,8 +12,8 @@
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2.5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--上左-->
@@ -25,31 +25,38 @@
             <Label Content="昵称：" FontSize="12" HorizontalContentAlignment="Right"/>
             <TextBlock/>
             <Label Content="用户名：" FontSize="12" HorizontalContentAlignment="Right"/>
+            <TextBlock/>
+            <Label Content="真实姓名：" FontSize="12" HorizontalContentAlignment="Right"/>
+            <TextBlock/>
+            <Label Content="密码：" FontSize="12" HorizontalContentAlignment="Right"/>
+
         </StackPanel>
         <!--上右-->
         <StackPanel Grid.Column="1" HorizontalAlignment="Left">
             <TextBlock Text="Hi-Friends" FontWeight="Bold" FontSize="36" Margin="0,20,0,0" Foreground="#1677FE" Height="50" Width="258"/>
             <TextBlock Height="66"/>
-            <TextBox Height="20" Width="215" HorizontalContentAlignment="Left"/>
+            <TextBox Height="20" Width="215" HorizontalContentAlignment="Left" Name="nickName"/>
             <TextBlock Height="20"/>
-            <TextBox Height="20" Width="215"></TextBox>
+            <TextBox Height="20" Width="215" HorizontalContentAlignment="Left" Name="userName"/>
+            <TextBlock Height="20"/>
+            <TextBox Height="20" Width="215" HorizontalContentAlignment="Left" Name="realName"/>
+            <TextBlock Height="20"/>
+            <TextBox Height="20" Width="215" HorizontalContentAlignment="Left" Name="password"/>
         </StackPanel>
         <!--中左-->
         <StackPanel Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right">
             <Label FontWeight="Bold" FontSize="20" Content="服务器" RenderTransformOrigin="0.361,-0.417" Margin="15,0,0,0"/>
             <TextBlock/>
             <Button Content="添加" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25" Click="AddButton_Click"/>
+            <Button Content="移除" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25" Click="RemoveButton_Click" Margin="0,20,0,0"/>
             <TextBlock Height="30"/>
-            <Button Content="移除" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25" Click="RemoveButton_Click"/>
-            <TextBlock Height="30"/>
-            <Button Content="编辑" Style="{StaticResource BtnInfoStyle}" Width="70" Height="25"/>
         </StackPanel>
         <!--中右-->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,27">
             <TextBlock Height="49"/>
             <ListBox x:Name="serverList" ItemsSource="{Binding}"
                      ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" MinHeight="140" MaxHeight="140">
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="75">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                       <!--  <Setter Property="Template">
@@ -70,7 +77,7 @@
         </StackPanel>
         <!--下-->
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
-            <Button Content="连接" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" Margin="0,20,50,0" HorizontalAlignment="Right" Click="ConnectButton_Click"/>
+            <Button Content="连接" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" Margin="0,5,50,0" HorizontalAlignment="Right" Click="ConnectButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>
