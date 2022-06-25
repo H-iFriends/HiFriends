@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using IRC_Business.IntelligentCompletion;
 using IRC;
 using IRC.entity;
+using IRC_Business.nlp;
 
 namespace IRC_Wpf
 {
@@ -30,6 +31,7 @@ namespace IRC_Wpf
         private UserInfo UserInfo;
         public ObservableCollection<Channel> Channels = new ObservableCollection<Channel>();
         private string LastSend = "";
+        public string Content = "";
 
         public ChatWindow(Channel channel, UserInfo userInfo)
         {
@@ -124,32 +126,46 @@ namespace IRC_Wpf
         private void initWindow()
         {
             //事件订阅
-            this.CurrentClient.EventMotdReceived += (sender, args) => {
-                var c = sender as Client;
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    this.CurrentChannel.ChatHistory += ($"\n\nReceived MOTD: from server {c.ServerAddress}\n" + args.motd);
-                    this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
-                }));
-            };
-
-            this.CurrentClient.EventMessageReceived += (sender, args) => {
+            this.CurrentClient.EventMotdReceived += (sender, args) =>
+            {
                 var c = sender as Client;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.CurrentChannel.ChatHistory +=
-                            ($"\n\nReceived message: from server {c.ServerAddress}\nTarget: [{args.target}]\nMessage: {args.message}");
+                        ($"\n\nReceived MOTD: from server {c.ServerAddress}\n" + args.motd);
                     this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
-                    LastSend = args.message;
                 }));
             };
-            
-            //热点聊天室列表数据绑定，也是给我一个list然后设置itemssource
-            //List<ChatRoom> hotChatRooms = new List<ChatRoom>();
-            //hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
-            //hotChatRooms.Add(new ChatRoom() { Activity = 33, Topic = "软件构造",Name="课程聊天室" });
-            //HotListDataBinding.ItemsSource = hotChatRooms;
 
+            this.CurrentClient.EventMessageReceived += (sender, args) =>
+            {
+                var c = sender as Client;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    this.CurrentChannel.ChatHistory +=
+                        "\n" + args.sender + ": " + args.message + "\n";
+                    this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
+                    Content += args.message + "\n";
+                    LastSend = args.message;
+
+                    //更改主题词
+                    // var topics = NLP.GetKeywords(Content);
+                    // if (topics.Length > 0)
+                    // {
+                    //     this.CurrentChannel.Topic = topics[0];
+                    // }
+                    // this.CurrentChannel.Topic = "Test";
+                }));
+            };
+
+
+            //热点聊天室列表数据绑定，也是给我一个list然后设置itemssource
+            // List<ChatRoom> hotChatRooms = new List<ChatRoom>();
+            // hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
+            // hotChatRooms.Add(new ChatRoom() { Activity = 33, Topic = "软件构造",Name="课程聊天室" });
+            // HotListDataBinding.ItemsSource = hotChatRooms;
+            this.CurrentChannel.Topic = "Test";
+            HotListDataBinding.DataContext = this.Channels;
             //已加入聊天室列表数据绑定，也是给我一个list然后设置itemssource
             //List<ChatRoom> joinedChatRooms = new List<ChatRoom>();
             //joinedChatRooms.Add(new ChatRoom() { Name = "王者荣耀" });

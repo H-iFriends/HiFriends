@@ -1,4 +1,6 @@
-﻿namespace IRC.entity;
+﻿using System.Collections.ObjectModel;
+
+namespace IRC.entity;
 
 public class Channel
 {
@@ -7,7 +9,8 @@ public class Channel
     // public int hostPort;
     public Client Client;
     public string ChatHistory = "";
-    
+    public string Topic = "";
+    public int Activity = 0;
     public Channel(Client client, ChannelInfo? channelInfo = null)
     {
         ChannelInfo = channelInfo;
