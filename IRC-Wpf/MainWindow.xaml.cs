@@ -110,7 +110,7 @@ namespace IRC_Wpf
                 throw new Exception("Login failed.");
             }
 
-            ChannelWindow channelDialog = new ChannelWindow(this.Client);
+           // ChannelWindow channelDialog = new ChannelWindow(this.Client);
             // if (channelDialog.ShowDialog() == true)
             // {
             //     
