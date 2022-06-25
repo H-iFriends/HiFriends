@@ -75,7 +75,7 @@ public partial class Client {
 		this.EventNicknameInUse?.Invoke(this, new NicknameInUseEventArgs(message.Parameters[1]));
 	}
 	
-	private void HandleNoSuchNick(Message message) {
+	private void HandleErrNoSuchNick(Message message) {
 		this.EventNoSuchNick?.Invoke(this, new NoSuchNickEventArgs(message.Parameters[1]));
 	}
 	
@@ -93,6 +93,9 @@ public partial class Client {
 				break;
 			case MessageType.ERR_BADCHANNELKEY:
 				m = "Bad channel key";
+				break;
+			case MessageType.ERR_NOSUCHCHANNEL:
+				m = "No such channel";
 				break;
 			default:
 				m = "Cannot join channel";
