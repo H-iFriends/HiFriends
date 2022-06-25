@@ -51,10 +51,13 @@ public class NLP {
 			SecretKey = Config.SECRET_KEY
 		}, "ap-guangzhou");
 
-		return c.KeywordsExtraction(new KeywordsExtractionRequest {
+		// ThreadPool.SetMinThreads(1000, 1000);
+
+		return c.KeywordsExtractionSync(new KeywordsExtractionRequest
+		{
 			Text = text,
-			Num = (ulong)limit
-		}).Result;
+			Num = (ulong) limit
+		});
 	}
 
 	public static string[] GetKeywords(string text, int limit = 10, float threshold = 0.6F) {
