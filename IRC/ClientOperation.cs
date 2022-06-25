@@ -5,6 +5,9 @@ public partial class Client {
 		if (!this.socket.Connected || string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
 			return false;
 
+		if (this.LoggedIn)
+			return true;
+
 		if (string.IsNullOrWhiteSpace(realName))
 			realName = "HiFriends IRC Client User";
 
