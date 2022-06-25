@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using IRC_Business.IntelligentCompletion;
+using IRC;
+using IRC.entity;
 
 namespace IRC_Wpf
 {
@@ -22,22 +25,41 @@ namespace IRC_Wpf
     public partial class ChatWindow : Window
     {
         public Completion Completion;
-        
-        public ChatWindow()
+        public Channel CurrentChannel;
+        public Client CurrentClient;
+        private UserInfo UserInfo;
+        public ObservableCollection<Channel> Channels = new ObservableCollection<Channel>();
+        private string LastSend = "";
+
+        public ChatWindow(Channel channel, UserInfo userInfo)
         {
+            this.Channels.Add(channel);
+            this.CurrentChannel = channel;
+            // this.CurrentClient = new Client(CurrentChannel.hostName, CurrentChannel.hostPort);
+            this.CurrentClient = this.CurrentChannel.Client;
+            this.UserInfo = userInfo;
             InitializeComponent();
             initWindow();
         }
+
         //按钮点击事件
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-
+            string toSend = msg_input.Text;
+            if (!string.IsNullOrEmpty(toSend))
+            {
+                //空指针需处理
+                if (!this.CurrentClient.Privmsg(CurrentChannel.ChannelInfo.name, toSend)) //频道名称
+                {
+                    throw new Exception("Message sent failed.");
+                }
+            }
         }
 
         private void addChatRoom_Click(object sender, RoutedEventArgs e)
         {
-            AddChatRoomWindow addChatRoomWindow = new AddChatRoomWindow();
-            if(addChatRoomWindow.ShowDialog() == true)
+            AddChatRoomWindow addChatRoomWindow = new AddChatRoomWindow(this.Channels, this.UserInfo);
+            if (addChatRoomWindow.ShowDialog() == true)
             {
                 //这目前看来不需要填什么
             }
@@ -45,26 +67,38 @@ namespace IRC_Wpf
 
         private void delChatRoom_Click(object sender, RoutedEventArgs e)
         {
-
+            Channel? channel = JoinedListDataBinding.SelectedItem as Channel;
+            if (channel != null)
+            {
+                this.Channels.Remove(channel);
+            }
+            else throw new Exception("selected item is not a Channel.");
         }
+
         private void plusOne_Click(object sender, RoutedEventArgs e)
         {
-
+            this.CurrentClient.Privmsg(this.CurrentChannel.ChannelInfo.name, LastSend);
         }
+
         private void quickSend_Click(object sender, RoutedEventArgs e)
         {
-
+            string toSend = msg_input.Text;
+            foreach (var channel in Channels)
+            {
+                channel.Client.Privmsg(channel.ChannelInfo.name, toSend);
+            }
         }
 
         //列表表项点击事件
         private void HotListDataBinding_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ChatRoom? chatRoomSelected = HotListDataBinding.SelectedItem as ChatRoom;
-            if(chatRoomSelected !=null && chatRoomSelected is ChatRoom)
+            if (chatRoomSelected != null && chatRoomSelected is ChatRoom)
             {
                 MessageBox.Show("选中的聊天室:" + chatRoomSelected.Name);
             }
         }
+
         //文本框内容发生变化时，自动补全功能生效
         private void msg_input_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -74,6 +108,7 @@ namespace IRC_Wpf
             //展示回传list
             this.autoCompletionDataBinding.DataContext = Completion.CompleteLastWord();
         }
+
         //列表双击选中后，自动补全
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -83,13 +118,32 @@ namespace IRC_Wpf
             {
                 this.msg_input.Text = Completion.GetNewSentence(selectedWord);
             }
-
         }
 
         //初始化窗口（传入数据）
         private void initWindow()
         {
+            //事件订阅
+            this.CurrentClient.EventMotdReceived += (sender, args) => {
+                var c = sender as Client;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    this.CurrentChannel.ChatHistory += ($"\n\nReceived MOTD: from server {c.ServerAddress}\n" + args.motd);
+                    this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
+                }));
+            };
 
+            this.CurrentClient.EventMessageReceived += (sender, args) => {
+                var c = sender as Client;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    this.CurrentChannel.ChatHistory +=
+                            ($"\n\nReceived message: from server {c.ServerAddress}\nTarget: [{args.target}]\nMessage: {args.message}");
+                    this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
+                    LastSend = args.message;
+                }));
+            };
+            
             //热点聊天室列表数据绑定，也是给我一个list然后设置itemssource
             //List<ChatRoom> hotChatRooms = new List<ChatRoom>();
             //hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
@@ -100,7 +154,7 @@ namespace IRC_Wpf
             //List<ChatRoom> joinedChatRooms = new List<ChatRoom>();
             //joinedChatRooms.Add(new ChatRoom() { Name = "王者荣耀" });
             //joinedChatRooms.Add(new ChatRoom() { Name = "英雄联盟" });
-            //JoinedListDataBinding.ItemsSource = joinedChatRooms;
+            JoinedListDataBinding.ItemsSource = this.Channels;
 
             //传入历史聊天记录
             //ChatHistory.Text = 你传入的string;
@@ -110,7 +164,7 @@ namespace IRC_Wpf
     //用来测试数据绑定，后面删掉传入正常数据list就行，写在里面的都是必须存在的东西
     public class ChatRoom
     {
-        public string Topic { get; set; }   
+        public string Topic { get; set; }
         public int Activity { get; set; }
         public string Name { get; set; }
 

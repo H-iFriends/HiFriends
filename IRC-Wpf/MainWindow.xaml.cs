@@ -28,7 +28,7 @@ namespace IRC_Wpf
         public ServerUtilities ServerUtilities = new ServerUtilities();
 
         private Client Client;
-        // private UserInfo UserInfo;
+        private UserInfo UserInfo;
 
         public MainWindow()
         {
@@ -91,7 +91,6 @@ namespace IRC_Wpf
             if (!this.Client.Connect())
             {
                 throw new Exception("Connection failed.");
-                
             }
 
             string user = this.userName.Text;
@@ -104,20 +103,25 @@ namespace IRC_Wpf
             }
 
             //登录
-            // this.UserInfo = new UserInfo(user, nick, realName, password);
             if (!this.Client.Login(nick, user, realName, password))
             {
                 throw new Exception("Login failed.");
             }
 
-           // ChannelWindow channelDialog = new ChannelWindow(this.Client);
-            // if (channelDialog.ShowDialog() == true)
-            // {
-            //     
-            //     
-            // }
-
-            this.Close();
+            //将userInfo传到后面的页面，便于后面新加频道
+            this.UserInfo = new UserInfo(user, nick, realName, password);
+            try
+            {
+                ChannelWindow channelDialog = new ChannelWindow(this.Client, this.UserInfo);
+                if (channelDialog.ShowDialog() == true)
+                {
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)

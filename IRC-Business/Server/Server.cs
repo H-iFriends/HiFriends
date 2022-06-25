@@ -34,6 +34,6 @@ public class Server: IEquatable<Server>
 
     public override string ToString()
     {
-        return ServerName + "\t" + ServerPort;
+        return ServerName + "/" + ServerPort;
     }
 }

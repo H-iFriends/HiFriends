@@ -27,12 +27,13 @@ public class ClientTest {
 		if (!client.Login("test", "test")) {
 			Assert.Fail("Could not login");
 		}
+		Thread.Sleep(10000);
 
-		if (!client.Join("#FEFE")) {
+		if (!client.Join("#haha")) {
 			Assert.Fail("Could not join channel");
 		}
 		
-		Thread.Sleep(20000);
+		Thread.Sleep(10000);
 		
 		client.Disconnect();
 	}

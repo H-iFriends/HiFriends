@@ -9,6 +9,7 @@
     &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.CompletionTest.GetLastTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.CompletionTest.CompletionLastWordTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;MSTest::0EE789A6-11B5-41E0-A8A1-8AAF9D30ABA3::net6.0::IRC_Business.IntelligentCompletion.Tests.CompletionTest.GetNewSentenceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::C36C8B1E-072E-48F8-813E-4CDD1A98BDFF::net6.0::IRCTest.ClientTest.TestLogin&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
