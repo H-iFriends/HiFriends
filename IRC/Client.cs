@@ -5,7 +5,10 @@ using System.Net.Sockets;
 using System.Text;
 using utils;
 
-public partial class Client {
+public partial class Client
+{
+	public string HostName;
+	public int Port;
 	public Client(string hostName, int port = 6667) {
 		var ipAddressFunc = () => {
 			if (IPAddress.TryParse(hostName, out var ip)) return ip;
@@ -19,6 +22,8 @@ public partial class Client {
 
 		this.socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 		this.ServerAddress = hostName + ":" + port;
+		this.HostName = hostName;
+		this.Port = port;
 	}
 
 	public string ServerAddress { get; }
