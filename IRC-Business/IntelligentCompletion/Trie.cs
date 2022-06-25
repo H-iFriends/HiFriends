@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace IRC_Business.IntelligentCompletion
 {
-    internal class Trie
+    public class Trie
     {
         public TrieNode beginNode;
         
         public Trie()
         {
             beginNode = new TrieNode();
+            
         }
 
         public void AddVocabulary(string s)
