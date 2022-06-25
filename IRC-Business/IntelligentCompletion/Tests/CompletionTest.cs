@@ -43,4 +43,10 @@ public class CompletionTest
         var newSentence4 = Completion4.GetNewSentence("apple");
         Assert.IsTrue(newSentence4.Equals("I am a student. I like eating apple"));
     }
+
+    [TestMethod]
+    public void f()
+    {
+        Completion completion = new("I am a s");
+    }
 }
