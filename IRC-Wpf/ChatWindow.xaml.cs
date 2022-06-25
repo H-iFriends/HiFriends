@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using IRC_Business.IntelligentCompletion;
 
 namespace IRC_Wpf
 {
@@ -20,6 +21,8 @@ namespace IRC_Wpf
     /// </summary>
     public partial class ChatWindow : Window
     {
+        public Completion Completion;
+        
         public ChatWindow()
         {
             InitializeComponent();
@@ -59,15 +62,19 @@ namespace IRC_Wpf
         {
             string textInputed = this.msg_input.Text;
             //然后调用函数
+            this.Completion = new Completion(textInputed);
             //展示回传list
-            //this.autoCompletionDataBinding.DataContext = 你的list
+            this.autoCompletionDataBinding.DataContext = Completion.CompleteLastWord();
         }
         //列表双击选中后，自动补全
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             //获得选中表项的string
-            string? autoCompletion = this.autoCompletionDataBinding.SelectedItem as string; 
-            //this.msg_input.Text = 回传的string
+            string? selectedWord = this.autoCompletionDataBinding.SelectedItem as string;
+            if (selectedWord != null)
+            {
+                this.msg_input.Text = Completion.GetNewSentence(selectedWord);
+            }
 
         }
 

@@ -8,6 +8,7 @@ public class CompletionTest
     public Completion Completion1 = new Completion("I am a s");
     public Completion Completion2 = new Completion("I am a ");
     public Completion Completion3 = new Completion("I am a student");
+    public Completion Completion4 = new Completion("I am a student. I like eating ap");
 
 
     
@@ -36,7 +37,10 @@ public class CompletionTest
     [TestMethod]
     public void GetNewSentenceTest()
     {
-        var newSentence = Completion1.GetNewSentence("student");
-        Assert.IsTrue(newSentence.Equals("I am a student"));
+        var newSentence1 = Completion1.GetNewSentence("student");
+        Assert.IsTrue(newSentence1.Equals("I am a student"));
+
+        var newSentence4 = Completion4.GetNewSentence("apple");
+        Assert.IsTrue(newSentence4.Equals("I am a student. I like eating apple"));
     }
 }
