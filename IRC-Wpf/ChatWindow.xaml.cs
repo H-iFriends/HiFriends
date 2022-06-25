@@ -31,7 +31,7 @@ namespace IRC_Wpf
         private UserInfo UserInfo;
         public ObservableCollection<Channel> Channels = new ObservableCollection<Channel>();
         private string LastSend = "";
-        public string Content = "";
+
 
         public ChatWindow(Channel channel, UserInfo userInfo)
         {
@@ -42,6 +42,8 @@ namespace IRC_Wpf
             this.UserInfo = userInfo;
             InitializeComponent();
             initWindow();
+
+            //倒计时
         }
 
         //按钮点击事件
@@ -50,11 +52,39 @@ namespace IRC_Wpf
             string toSend = msg_input.Text;
             if (!string.IsNullOrEmpty(toSend))
             {
-                //空指针需处理
                 if (!this.CurrentClient.Privmsg(CurrentChannel.ChannelInfo.name, toSend)) //频道名称
                 {
                     throw new Exception("Message sent failed.");
                 }
+
+                CurrentChannel.ContentHistory += toSend + "\n";
+                this.CurrentChannel.ChatHistory += "\n" + UserInfo.User + ": " + toSend + "\n";
+                this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
+                LastSend = toSend;
+
+                //更改活跃度
+                this.CurrentChannel.Times.Add(DateTime.Now);
+                int acticity = 0;
+                foreach (var dateTime in this.CurrentChannel.Times)
+                {
+                    if (DateTime.Now.Subtract(dateTime).TotalMinutes <= 3)
+                    {
+                        acticity++;
+                    }
+                }
+                this.CurrentChannel.Activity = acticity;
+
+                //更改主题词
+                var topics = NLP.GetKeywords(CurrentChannel.ContentHistory);
+                if (topics.Length > 0)
+                {
+                    this.CurrentChannel.Topic = topics[0];
+                }
+
+                HotListDataBinding.ItemsSource = null;
+                HotListDataBinding.Items.Refresh();
+                HotListDataBinding.ItemsSource = this.Channels;
+                HotListDataBinding.Items.Refresh();
             }
         }
 
@@ -66,7 +96,7 @@ namespace IRC_Wpf
                 //这目前看来不需要填什么
             }
         }
-        //删除当前已加入聊天室
+
         private void delChatRoom_Click(object sender, RoutedEventArgs e)
         {
             Channel? channel = JoinedListDataBinding.SelectedItem as Channel;
@@ -76,26 +106,64 @@ namespace IRC_Wpf
             }
             else throw new Exception("selected item is not a Channel.");
         }
-        //+1按钮
+
         private void plusOne_Click(object sender, RoutedEventArgs e)
         {
             this.CurrentClient.Privmsg(this.CurrentChannel.ChannelInfo.name, LastSend);
+
+            this.CurrentChannel.ChatHistory += "\n" + this.UserInfo.User + ": " + LastSend + "\n";
+            this.CurrentChannel.ContentHistory += LastSend + "\n";
+            Dispatcher.BeginInvoke(new Action(() => { this.ChatHistory.Text = this.CurrentChannel.ChatHistory; }));
+
+            //更改活跃度
+            this.CurrentChannel.Times.Add(DateTime.Now);
+            int acticity = 0;
+            foreach (var dateTime in this.CurrentChannel.Times)
+            {
+                if (DateTime.Now.Subtract(dateTime).TotalMinutes <= 3)
+                {
+                    acticity++;
+                }
+            }
+            this.CurrentChannel.Activity = acticity;
+
+            // 更改主题词
+            var topics = NLP.GetKeywords(this.CurrentChannel.ContentHistory);
+            if (topics.Length > 0)
+            {
+                this.CurrentChannel.Topic = topics[0];
+                HotListDataBinding.ItemsSource = null;
+                HotListDataBinding.Items.Refresh();
+                HotListDataBinding.ItemsSource = this.Channels;
+                HotListDataBinding.Items.Refresh();
+            }
         }
-        //一键水群按钮
+
         private void quickSend_Click(object sender, RoutedEventArgs e)
         {
             string toSend = msg_input.Text;
             foreach (var channel in Channels)
             {
                 channel.Client.Privmsg(channel.ChannelInfo.name, toSend);
-            }
-        }
-        //已加入列表双击函数
-        private void JoinedDataBinding_DoubleClick(object sender, RoutedEventArgs e)
-        {
+                channel.ChatHistory += "\n" + this.UserInfo.User + ": " + toSend + "\n";
+                channel.ContentHistory += toSend + "\n";
+                channel.Times.Add(DateTime.Now);
+                int activity = 0;
+                foreach (DateTime dateTime in channel.Times)
+                {
+                    if (DateTime.Now.Subtract(dateTime).TotalMinutes <= 3)
+                    {
+                        activity++;
+                    }
+                }
 
+                channel.Activity = activity;
+            }
+
+            Dispatcher.BeginInvoke(new Action(() => { this.ChatHistory.Text = this.CurrentChannel.ChatHistory; }));
         }
-        //热门聊天室列表表项点击事件
+
+        //列表表项点击事件
         private void HotListDataBinding_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ChatRoom? chatRoomSelected = HotListDataBinding.SelectedItem as ChatRoom;
@@ -126,6 +194,14 @@ namespace IRC_Wpf
             }
         }
 
+        //选择频道
+        private void JoinedDataBinding_DoubleClick(object sender, EventArgs e)
+        {
+            int index = this.JoinedListDataBinding.SelectedIndex;
+            this.CurrentChannel = Channels[index];
+            Dispatcher.BeginInvoke(new Action(() => { this.ChatHistory.Text = this.CurrentChannel.ChatHistory; }));
+        }
+
         //初始化窗口（传入数据）
         private void initWindow()
         {
@@ -144,21 +220,44 @@ namespace IRC_Wpf
             this.CurrentClient.EventMessageReceived += (sender, args) =>
             {
                 var c = sender as Client;
+                string channelName = args.target;
+                foreach (var channel in Channels)
+                {
+                    if (channel.ChannelInfo.name.Equals(channelName))
+                    {
+                        channel.ChatHistory += "\n" + args.sender + ": " + args.message + "\n";
+                        channel.ContentHistory += args.message + "\n";
+                    }
+                }
+
+                LastSend = args.message;
+                //找到新消息的所在频道
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    this.CurrentChannel.ChatHistory +=
-                        "\n" + args.sender + ": " + args.message + "\n";
                     this.ChatHistory.Text = this.CurrentChannel.ChatHistory;
-                    Content += args.message + "\n";
-                    LastSend = args.message;
 
-                    //更改主题词
-                    // var topics = NLP.GetKeywords(Content);
-                    // if (topics.Length > 0)
-                    // {
-                    //     this.CurrentChannel.Topic = topics[0];
-                    // }
-                    // this.CurrentChannel.Topic = "Test";
+                    //更改活跃度
+                    this.CurrentChannel.Times.Add(DateTime.Now);
+                    int acticity = 0;
+                    foreach (var dateTime in this.CurrentChannel.Times)
+                    {
+                        if (DateTime.Now.Subtract(dateTime).TotalMinutes <= 3)
+                        {
+                            acticity++;
+                        }
+                    }
+                    this.CurrentChannel.Activity = acticity;
+
+                    // 更改主题词
+                    var topics = NLP.GetKeywords(this.CurrentChannel.ContentHistory);
+                    if (topics.Length > 0)
+                    {
+                        this.CurrentChannel.Topic = topics[0];
+                        HotListDataBinding.ItemsSource = null;
+                        HotListDataBinding.Items.Refresh();
+                        HotListDataBinding.ItemsSource = this.Channels;
+                        HotListDataBinding.Items.Refresh();
+                    }
                 }));
             };
 
@@ -168,8 +267,8 @@ namespace IRC_Wpf
             // hotChatRooms.Add(new ChatRoom() { Activity = 20 , Topic = "足球",Name="体育聊天室" });
             // hotChatRooms.Add(new ChatRoom() { Activity = 33, Topic = "软件构造",Name="课程聊天室" });
             // HotListDataBinding.ItemsSource = hotChatRooms;
-            this.CurrentChannel.Topic = "Test";
-            HotListDataBinding.ItemsSource = Channels;
+            // this.CurrentChannel.Topic = "Test";
+            HotListDataBinding.ItemsSource = this.Channels;
             //已加入聊天室列表数据绑定，也是给我一个list然后设置itemssource
             //List<ChatRoom> joinedChatRooms = new List<ChatRoom>();
             //joinedChatRooms.Add(new ChatRoom() { Name = "王者荣耀" });

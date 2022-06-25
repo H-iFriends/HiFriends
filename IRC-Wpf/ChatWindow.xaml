@@ -61,7 +61,7 @@
         <!--中上-->
         <StackPanel Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Background="#F5f5f5" Margin="5,5,5,5">
             <TextBlock FontSize="24" FontWeight="Bold" Foreground="#1677FE" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,20,0,0" Height="Auto">
-				聊天室1
+				聊天室
             </TextBlock>
         </StackPanel>
         <!--中中-->
