@@ -47,6 +47,14 @@ namespace IRC_Wpf
         {
 
         }
+        private void plusOne_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void quickSend_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         //列表表项点击事件
         private void HotListDataBinding_SelectionChanged(object sender, RoutedEventArgs e)

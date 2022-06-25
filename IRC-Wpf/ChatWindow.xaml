@@ -65,7 +65,15 @@
         <!--中下+右下-->
         <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal">
             <StackPanel Orientation="Vertical">
-                <TextBox Name="msg_input" TextWrapping="Wrap" AcceptsReturn="True"  BorderBrush="White" Height="50" Width="282" Margin="5,5,5,5" Foreground="Black"
+                <StackPanel Orientation="Horizontal" Height="27">
+                    <Button Name="plusOne_btn" Width="25" Height="25" Click="plusOne_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" Margin="10,0,0,0">
+                        <Image Source="Resources/icon_plusOne.png"/>
+                    </Button>
+                    <Button Name="quickSend_btn" Width="25" Height="25" Click="quickSend_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" Margin="10,0,0,0">
+                        <Image Source="Resources/icon_quickSend.png"/>
+                    </Button>
+                </StackPanel>
+                <TextBox Name="msg_input" TextWrapping="Wrap" AcceptsReturn="True"  BorderBrush="White" Height="50" Width="419" Margin="5,5,5,5" Foreground="Black"
                          TextChanged="msg_input_TextChanged">
                     <TextBox.Resources>
                         <VisualBrush x:Key="HelpBrush" TileMode="None" Opacity="1" Stretch="None" AlignmentX="Left" AlignmentY="Top">
@@ -95,8 +103,7 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
             </StackPanel>
-            <Button Content="发送" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" Margin="40,20,40,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
-            <Button Content="一键水群" Style="{StaticResource SecBtnInfoStyle}" Width="80" Height="40" Margin="0,20,50,0" HorizontalAlignment="Right" Click="SendButton_Click"/>
+            <Button Content="发送" Style="{StaticResource BtnInfoStyle}" Width="80" Height="40" HorizontalAlignment="Right" Click="SendButton_Click" VerticalAlignment="Bottom" Margin="20,0,10,20"/>
         </StackPanel>
     </Grid>
 </Window>
