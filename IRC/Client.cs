@@ -169,6 +169,9 @@ public partial class Client
 			case MessageType.ERR_BADCHANNELKEY:
 				this.HandleCannotJoinChannel(message);
 				break;
+			case MessageType.ERR_NOSUCHNICK:
+				this.HandleErrNoSuchNick(message);
+				break;
 		}
 	}
 }

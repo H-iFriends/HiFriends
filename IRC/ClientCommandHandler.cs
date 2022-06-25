@@ -75,7 +75,7 @@ public partial class Client {
 		this.EventNicknameInUse?.Invoke(this, new NicknameInUseEventArgs(message.Parameters[1]));
 	}
 	
-	private void HandleNoSuchNick(Message message) {
+	private void HandleErrNoSuchNick(Message message) {
 		this.EventNoSuchNick?.Invoke(this, new NoSuchNickEventArgs(message.Parameters[1]));
 	}
 	
