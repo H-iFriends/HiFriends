@@ -33,6 +33,11 @@ public class Message {
 		}
 
 		var commandStr = message[..message.IndexOf(' ')].ToUpper();
+
+		if (commandStr == "ERROR") {
+			throw new Exception(message);
+		}
+		
 		// This works, verified!
 		var command = (MessageType)Enum.Parse(typeof(MessageType), commandStr);
 		message = message[(commandStr.Length + 1)..];

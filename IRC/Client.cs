@@ -119,11 +119,18 @@ public partial class Client
 	private void ParseMessage(string message) {
 		if (string.IsNullOrWhiteSpace(message))
 			return;
-		var messageObj = Message.parse(message);
-		if (messageObj == null)
-			return;
-
-		this.HandleMessage(messageObj);
+		try {
+			var messageObj = Message.parse(message);
+			if (messageObj == null)
+				return;
+			
+			this.HandleMessage(messageObj);
+		} catch (Exception e) {
+			Console.WriteLine(e);
+			this.LoggedIn = false;
+			this.socket.Disconnect(true);
+			this.EventError?.Invoke(this, new ErrorEventArgs(e));
+		}
 	}
 
 	private void HandleMessage(Message message) {

@@ -23,6 +23,8 @@ public delegate void CannotJoinChannelEventHandler(object sender, CannotJoinChan
 
 public delegate void NoSuchNickEventHandler(object sender, NoSuchNickEventArgs e);
 
+public delegate void ErrorEventHandler(object sender, ErrorEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
 
@@ -63,4 +65,7 @@ public partial class Client {
 	public event CannotJoinChannelEventHandler EventCannotJoinChannel;
 	
 	public event NoSuchNickEventHandler EventNoSuchNick;
+	
+	public event ErrorEventHandler EventError;
+	
 }
