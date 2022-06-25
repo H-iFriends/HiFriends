@@ -79,7 +79,7 @@ namespace IRC_Wpf
             if (server == null)
             {
                 //弹窗
-                
+                MessageBox.Show("请选择服务器进行连接", "ERROR");
                 throw new ArgumentException();
             }
 
