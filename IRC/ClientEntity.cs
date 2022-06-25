@@ -27,6 +27,8 @@ public delegate void ErrorEventHandler(object sender, ErrorEventArgs e);
 
 public delegate void NotOnChannelEventHandler(object sender, NotOnChannelEventArgs e);
 
+public delegate void PartedChannelEventHandler(object sender, PartedChannelEventArgs e);
+
 public partial class Client {
 	private const int BUFFER_SIZE = 1024;
 
@@ -71,5 +73,7 @@ public partial class Client {
 	public event ErrorEventHandler EventError;
 	
 	public event NotOnChannelEventHandler EventNotOnChannel;
+	
+	public event PartedChannelEventHandler EventPartedChannel;
 	
 }

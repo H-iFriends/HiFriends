@@ -83,6 +83,12 @@ public partial class Client {
 		this.EventNotOnChannel?.Invoke(this, new NotOnChannelEventArgs(message.Parameters[1]));
 	}
 	
+	private void HandlePart(Message message) {
+		var nick = message.Prefix?.GetNick()!;
+		var channel = message.Parameters[0];
+		this.EventPartedChannel?.Invoke(this, new PartedChannelEventArgs(channel, nick));
+	}
+	
 	private void HandleCannotJoinChannel(Message message) {
 		string m;
 		switch (message.Command) {

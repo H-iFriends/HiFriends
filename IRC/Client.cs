@@ -183,6 +183,9 @@ public partial class Client
 			case MessageType.ERR_NOTONCHANNEL:
 				this.HandleErrNotOnChannel(message);
 				break;
+			case MessageType.PART:
+				this.HandlePart(message);
+				break;
 		}
 	}
 }
