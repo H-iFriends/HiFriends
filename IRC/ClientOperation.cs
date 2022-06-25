@@ -26,18 +26,27 @@ public partial class Client {
 	public bool Join(string channel) {
 		if (!this.LoggedIn)
 			return false;
+		if (string.IsNullOrWhiteSpace(channel))
+			return false;
+
 		return this.SendMessage("JOIN", channel);
 	}
 	
 	public bool Privmsg(string target, string message) {
 		if (!this.LoggedIn)
 			return false;
+		if (string.IsNullOrWhiteSpace(message))
+			return true;
+		
 		return this.SendMessage("PRIVMSG", target, ":" + message);
 	}
 	
 	public bool Part(string channel) {
 		if (!this.LoggedIn)
 			return false;
+		if (string.IsNullOrWhiteSpace(channel))
+			return true;
+		
 		return this.SendMessage("PART", channel);
 	}
 	
