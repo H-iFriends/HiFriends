@@ -94,6 +94,9 @@ public partial class Client {
 			case MessageType.ERR_BADCHANNELKEY:
 				m = "Bad channel key";
 				break;
+			case MessageType.ERR_NOSUCHCHANNEL:
+				m = "No such channel";
+				break;
 			default:
 				m = "Cannot join channel";
 				break;
