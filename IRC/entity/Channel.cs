@@ -9,8 +9,8 @@ public class Channel
     // public int hostPort;
     public Client Client;
     public string ChatHistory = "";
-    public string Topic = "";
-    public int Activity = 0;
+    public string Topic { get;set; }
+    public int Activity { get; set; }
     public Channel(Client client, ChannelInfo? channelInfo = null)
     {
         ChannelInfo = channelInfo;

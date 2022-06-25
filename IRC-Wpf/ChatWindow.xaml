@@ -25,7 +25,14 @@
         </StackPanel>
         <!--左中-->
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" >
-            <ListView Margin="10" Name="JoinedListDataBinding" BorderThickness="0" ItemContainerStyle="{StaticResource JoinedRoomClick}">
+            <ListView Margin="10" Name="JoinedListDataBinding" BorderThickness="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Style.Setters>
+                            <EventSetter Event="MouseDoubleClick" Handler="JoinedDataBinding_DoubleClick"/>
+                        </Style.Setters>
+                    </Style>
+                </ListView.ItemContainerStyle>
             </ListView>
             <StackPanel Orientation="Horizontal">
                 <Button Name="addChatRoom" Width="30" Height="30" Click="addChatRoom_Click" Background="White" BorderThickness="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,10,10,10">

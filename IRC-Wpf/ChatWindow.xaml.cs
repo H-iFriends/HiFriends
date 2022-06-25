@@ -66,7 +66,7 @@ namespace IRC_Wpf
                 //这目前看来不需要填什么
             }
         }
-
+        //删除当前已加入聊天室
         private void delChatRoom_Click(object sender, RoutedEventArgs e)
         {
             Channel? channel = JoinedListDataBinding.SelectedItem as Channel;
@@ -76,12 +76,12 @@ namespace IRC_Wpf
             }
             else throw new Exception("selected item is not a Channel.");
         }
-
+        //+1按钮
         private void plusOne_Click(object sender, RoutedEventArgs e)
         {
             this.CurrentClient.Privmsg(this.CurrentChannel.ChannelInfo.name, LastSend);
         }
-
+        //一键水群按钮
         private void quickSend_Click(object sender, RoutedEventArgs e)
         {
             string toSend = msg_input.Text;
@@ -90,8 +90,12 @@ namespace IRC_Wpf
                 channel.Client.Privmsg(channel.ChannelInfo.name, toSend);
             }
         }
+        //已加入列表双击函数
+        private void JoinedDataBinding_DoubleClick(object sender, RoutedEventArgs e)
+        {
 
-        //列表表项点击事件
+        }
+        //热门聊天室列表表项点击事件
         private void HotListDataBinding_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ChatRoom? chatRoomSelected = HotListDataBinding.SelectedItem as ChatRoom;
@@ -165,7 +169,7 @@ namespace IRC_Wpf
             // hotChatRooms.Add(new ChatRoom() { Activity = 33, Topic = "软件构造",Name="课程聊天室" });
             // HotListDataBinding.ItemsSource = hotChatRooms;
             this.CurrentChannel.Topic = "Test";
-            HotListDataBinding.DataContext = this.Channels;
+            HotListDataBinding.ItemsSource = Channels;
             //已加入聊天室列表数据绑定，也是给我一个list然后设置itemssource
             //List<ChatRoom> joinedChatRooms = new List<ChatRoom>();
             //joinedChatRooms.Add(new ChatRoom() { Name = "王者荣耀" });

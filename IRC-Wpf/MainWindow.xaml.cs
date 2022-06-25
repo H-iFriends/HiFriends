@@ -99,6 +99,7 @@ namespace IRC_Wpf
             string? password = this.password.Text;
             if (string.IsNullOrWhiteSpace(nick) || string.IsNullOrWhiteSpace(user))
             {
+                MessageBox.Show("请填写昵称与用户名", "ERROR");
                 throw new ArgumentException("Invalid nick name or user name.");
             }
 
