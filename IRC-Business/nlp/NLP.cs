@@ -45,7 +45,19 @@ public class NLP {
 		}).Result;
 	}
 
-	public static string[] GetKeywords(string text) {
+	public static KeywordsExtractionResponse KeywordsExtraction(string text) {
+			var c = new NlpClient(new Credential {
+			SecretId = Config.SECRET_ID,
+			SecretKey = Config.SECRET_KEY
+		}, "ap-guangzhou");
+
+		return c.KeywordsExtraction(new KeywordsExtractionRequest {
+			Text = text
+		}).Result;
+	}
+
+	public static string[] GetKeywords(string text, float threshold = 0.6F) {
+		/*
 		var response = LexicalAnalysis(text);
 		var keywordSet = new HashSet<string>();
 		foreach (var t in response.PosTokens) {
@@ -53,6 +65,14 @@ public class NLP {
 				continue;
 			keywordSet.Add($"{t.Word}({t.Pos})");
 		}
-		return keywordSet.ToArray();
+		 */
+		var response = KeywordsExtraction(text);
+		var keywords = new List<string>();
+		foreach (var t in response.Keywords) {
+			if (t.Score < threshold)
+				continue;
+			keywords.Add(t.Word);
+		}
+		return keywords.ToArray();
 	}
 }
